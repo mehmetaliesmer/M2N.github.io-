@@ -361,86 +361,58 @@
       color: #000000 !important;
     }
 
-    /* Premium POPÜLER Badge Pill & Leaf Number Indicators */
+    /* Refined Luxury POPÜLER Pill Badge Inside Clover Leaf 2 */
     .populer-pill-badge {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.25rem;
-      padding: 0.25rem 0.65rem;
+      padding: 0.2rem 0.6rem;
       border-radius: 9999px;
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       font-weight: 800;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
+      line-height: 1;
       margin-bottom: 0.35rem;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
       transition: all 0.25s ease;
     }
     .m2n-clover-leaf.active-leaf .populer-pill-badge {
       background-color: #000000 !important;
       color: #FFFFFF !important;
-      border: 1px solid rgba(0, 0, 0, 0.6) !important;
+      border: 1px solid rgba(0, 0, 0, 0.8) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16) !important;
     }
     .m2n-clover-leaf:not(.active-leaf) .populer-pill-badge {
-      background-color: rgba(255, 255, 255, 0.12) !important;
+      background-color: rgba(255, 255, 255, 0.08) !important;
       color: #FFFFFF !important;
-      border: 1px solid rgba(255, 255, 255, 0.25) !important;
+      border: 1px solid rgba(255, 255, 255, 0.22) !important;
     }
     html.light-theme .m2n-clover-leaf.active-leaf .populer-pill-badge {
       background-color: #FFFFFF !important;
       color: #000000 !important;
       border: 1px solid rgba(255, 255, 255, 0.95) !important;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25) !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25) !important;
     }
     html.light-theme .m2n-clover-leaf:not(.active-leaf) .populer-pill-badge {
       background-color: rgba(0, 0, 0, 0.06) !important;
       color: #000000 !important;
-      border: 1px solid rgba(0, 0, 0, 0.15) !important;
+      border: 1px solid rgba(0, 0, 0, 0.18) !important;
     }
 
-    .leaf-num-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 1.5rem;
-      height: 1.5rem;
-      border-radius: 9999px;
-      font-family: monospace;
-      font-size: 0.7rem;
-      font-weight: 700;
-      margin-bottom: 0.35rem;
-      transition: all 0.25s ease;
-    }
-    .m2n-clover-leaf.active-leaf .leaf-num-badge {
-      background: #000000;
-      color: #FFFFFF;
-    }
-    .m2n-clover-leaf:not(.active-leaf) .leaf-num-badge {
-      background: rgba(255, 255, 255, 0.1);
-      color: #A1A1AA;
-    }
-    html.light-theme .m2n-clover-leaf.active-leaf .leaf-num-badge {
-      background: #FFFFFF !important;
-      color: #000000 !important;
-    }
-    html.light-theme .m2n-clover-leaf:not(.active-leaf) .leaf-num-badge {
-      background: rgba(0, 0, 0, 0.06) !important;
-      color: #27272A !important;
-    }
-
-    /* Ultra-Luxe Organic Oval Clover Petals (Softer, rounder, perfectly balanced curves) */
+    /* Exact M2N Logo 4-Petal Shapes (1:1 with Official M2N Logo Emblem)
+       Alternating diagonal rounding: 58% on opposite lobes, 10-12% on corners, inner sharp point faces center */
     .leaf-tl {
-      border-radius: 35% 65% 28% 65% / 65% 35% 65% 28% !important;
+      border-radius: 12% 58% 10% 58% !important;
     }
     .leaf-tr {
-      border-radius: 65% 35% 65% 28% / 35% 65% 28% 65% !important;
+      border-radius: 58% 12% 58% 10% !important;
     }
     .leaf-bl {
-      border-radius: 65% 28% 65% 35% / 28% 65% 35% 65% !important;
+      border-radius: 58% 10% 58% 12% !important;
     }
     .leaf-br {
-      border-radius: 28% 65% 35% 65% / 65% 28% 65% 35% !important;
+      border-radius: 10% 58% 12% 58% !important;
     }
 
     /* Elegant Full-Screen Section Architecture with Clean Borders & Smooth Scrolling */
@@ -1488,7 +1460,7 @@
 
             <!-- Leaf 1: Top-Left (Esnaf) -->
             <div id="leaf-1" onclick="selectCloverLeaf(1)" class="m2n-clover-leaf leaf-tl">
-              <span class="leaf-num-badge">01</span>
+              <span class="leaf-badge text-xs font-mono font-bold mb-1">01</span>
               <span class="leaf-title text-xs sm:text-sm font-bold leading-tight">Esnaf & Butik</span>
             </div>
 
@@ -1500,13 +1472,13 @@
 
             <!-- Leaf 3: Bottom-Left (Zincir) -->
             <div id="leaf-3" onclick="selectCloverLeaf(3)" class="m2n-clover-leaf leaf-bl">
-              <span class="leaf-num-badge">03</span>
+              <span class="leaf-badge text-xs font-mono font-bold mb-1">03</span>
               <span class="leaf-title text-xs sm:text-sm font-bold leading-tight">Zincir Mağaza</span>
             </div>
 
             <!-- Leaf 4: Bottom-Right (Holding) -->
             <div id="leaf-4" onclick="selectCloverLeaf(4)" class="m2n-clover-leaf leaf-br">
-              <span class="leaf-num-badge">04</span>
+              <span class="leaf-badge text-xs font-mono font-bold mb-1">04</span>
               <span class="leaf-title text-xs sm:text-sm font-bold leading-tight">Holding</span>
             </div>
 
