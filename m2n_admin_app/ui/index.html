@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M2N Tech — Lead & Proje Yönetim Paneli</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      user-select: none;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(120, 120, 120, 0.25);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(120, 120, 120, 0.45);
+    }
+    .badge-pill {
+      border-radius: 9999px;
+      padding: 0.2rem 0.65rem;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+  </style>
+</head>
+<body class="bg-[#0A0A0A] text-white dark:bg-[#0A0A0A] dark:text-white transition-colors duration-200 min-h-screen flex flex-col antialiased selection:bg-white selection:text-black">
+
+  <!-- ==================== TOP NAVIGATION ==================== -->
+  <header class="border-b border-white/10 dark:border-white/10 bg-black/60 backdrop-blur-xl sticky top-0 z-50 px-6 py-3.5 flex items-center justify-between">
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-3">
+        <img src="logo.png" alt="M2N Tech" class="h-6 w-auto object-contain filter invert-0 dark:invert-0 logo-invertible">
+        <div class="h-4 w-px bg-white/20"></div>
+        <span class="text-xs font-mono font-bold tracking-widest uppercase text-neutral-300">LEAD & PROJE MERKEZİ</span>
+      </div>
+
+      <!-- Real-Time Server Status Indicator -->
+      <div class="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-[11px] font-mono text-emerald-400">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span>CANLI DİNLEME • PORT 4848</span>
+      </div>
+    </div>
+
+    <!-- Right Controls: Clock, Theme Toggle, New Manual Lead, CSV Export -->
+    <div class="flex items-center gap-2.5">
+      <div id="liveClock" class="hidden md:block text-xs font-mono text-neutral-400 mr-2">--:--:--</div>
+
+      <button onclick="exportCsv()" title="Tüm başvuruları Excel / CSV olarak Masaüstüne kaydet" class="px-3.5 py-1.5 rounded-xl border border-white/15 hover:border-white/40 bg-white/5 hover:bg-white/10 text-xs font-semibold flex items-center gap-1.5 transition-all">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        <span>CSV İndir</span>
+      </button>
+
+      <button onclick="openNewLeadModal()" class="px-4 py-1.5 rounded-xl bg-white text-black hover:bg-neutral-200 text-xs font-bold tracking-wider uppercase flex items-center gap-1.5 transition-all shadow-lg active:scale-95">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+        <span>Yeni Kayıt</span>
+      </button>
+
+      <button onclick="toggleTheme()" class="w-9 h-9 rounded-xl border border-white/15 hover:border-white/40 bg-white/5 hover:bg-white/10 flex items-center justify-center text-xs transition-all" title="Tema Değiştir">
+        <span id="themeIcon">☀️</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT AREA ==================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-6 space-y-6">
+
+    <!-- KPI Metrics Banner -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+      <div class="p-4 rounded-2xl bg-[#111111] border border-white/10 flex flex-col justify-between">
+        <div class="text-[11px] font-mono uppercase text-neutral-400">Toplam Başvuru</div>
+        <div class="flex items-baseline justify-between mt-2">
+          <div id="statTotal" class="text-3xl font-extrabold font-mono">0</div>
+          <span class="text-xs text-neutral-500 font-mono">Kayıt</span>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-2xl bg-[#111111] border border-emerald-500/20 flex flex-col justify-between relative overflow-hidden">
+        <div class="text-[11px] font-mono uppercase text-emerald-400 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          <span>Yeni / Bekleyen</span>
+        </div>
+        <div class="flex items-baseline justify-between mt-2">
+          <div id="statNew" class="text-3xl font-extrabold font-mono text-emerald-400">0</div>
+          <span class="text-xs text-emerald-500/60 font-mono">Aksiyon</span>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-2xl bg-[#111111] border border-white/10 flex flex-col justify-between">
+        <div class="text-[11px] font-mono uppercase text-neutral-400">İnceleniyor / Teklif</div>
+        <div class="flex items-baseline justify-between mt-2">
+          <div id="statInReview" class="text-3xl font-extrabold font-mono text-amber-400">0</div>
+          <span class="text-xs text-neutral-500 font-mono">Süreçte</span>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-2xl bg-[#111111] border border-white/10 flex flex-col justify-between">
+        <div class="text-[11px] font-mono uppercase text-neutral-400">Kazanılan Proje</div>
+        <div class="flex items-baseline justify-between mt-2">
+          <div id="statWon" class="text-3xl font-extrabold font-mono text-white">0</div>
+          <span id="statRate" class="text-xs text-emerald-400 font-mono">%0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter & Search Toolbar -->
+    <div class="p-4 rounded-2xl bg-[#111111] border border-white/10 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3.5">
+      <!-- Search Input -->
+      <div class="relative flex-1">
+        <svg class="w-4 h-4 text-neutral-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" stroke-width="2"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="searchInput" oninput="renderLeads()" placeholder="Ad, Şirket, E-posta, Telefon veya Mesajda ara..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-black/60 border border-white/10 text-xs focus:border-white focus:outline-none transition-all placeholder:text-neutral-500">
+      </div>
+
+      <!-- Status Filter Pills -->
+      <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 text-xs">
+        <button onclick="setStatusFilter('ALL')" id="filter-ALL" class="filter-tab px-3 py-1.5 rounded-lg font-semibold border border-white bg-white text-black transition-all">Tümü</button>
+        <button onclick="setStatusFilter('Yeni')" id="filter-Yeni" class="filter-tab px-3 py-1.5 rounded-lg font-semibold border border-white/10 text-neutral-400 hover:text-white transition-all">Yeni</button>
+        <button onclick="setStatusFilter('İnceleniyor')" id="filter-İnceleniyor" class="filter-tab px-3 py-1.5 rounded-lg font-semibold border border-white/10 text-neutral-400 hover:text-white transition-all">İnceleniyor</button>
+        <button onclick="setStatusFilter('Teklif Verildi')" id="filter-Teklif" class="filter-tab px-3 py-1.5 rounded-lg font-semibold border border-white/10 text-neutral-400 hover:text-white transition-all">Teklif</button>
+        <button onclick="setStatusFilter('Kazanıldı')" id="filter-Kazanıldı" class="filter-tab px-3 py-1.5 rounded-lg font-semibold border border-white/10 text-neutral-400 hover:text-white transition-all">Kazanıldı</button>
+        <button onclick="setStatusFilter('STAR')" id="filter-STAR" class="filter-tab px-3 py-1.5 rounded-lg font-semibold border border-white/10 text-neutral-400 hover:text-white transition-all">★ Yıldızlı</button>
+      </div>
+
+      <!-- Quick Test Lead Button -->
+      <button onclick="triggerSimulatedLead()" title="Web sitesi formundan otomatik gerçekçi başvuru düşürmeyi simüle et" class="px-3.5 py-2 rounded-xl border border-dashed border-white/30 hover:border-white text-xs font-mono text-neutral-300 hover:text-white flex items-center justify-center gap-1.5 transition-all shrink-0">
+        <span>⚡ Test Başvurusu Simüle Et</span>
+      </button>
+    </div>
+
+    <!-- Leads Container List -->
+    <div id="leadsList" class="space-y-3">
+      <!-- Injected dynamically via JavaScript -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="hidden text-center py-16 p-8 rounded-3xl bg-[#111111] border border-white/10">
+      <div class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-3 text-neutral-400">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
+      </div>
+      <h3 class="text-sm font-bold text-white mb-1">Henüz Eşleşen Başvuru Bulunamadı</h3>
+      <p class="text-xs text-neutral-400 max-w-sm mx-auto">Web sitesindeki formdan bir talep geldiğinde veya yukarıdaki "Test Başvurusu Simüle Et" butonuna tıkladığınızda burada listelenecektir.</p>
+    </div>
+
+  </main>
+
+  <!-- ==================== MANUAL LEAD MODAL ==================== -->
+  <dialog id="newLeadModal" class="rounded-3xl bg-[#141414] border border-white/20 p-6 text-white max-w-lg w-full backdrop:bg-black/80 backdrop:backdrop-blur-sm shadow-2xl">
+    <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
+      <h3 class="text-base font-bold text-white">Yeni Müşteri / Proje Talebi Ekle</h3>
+      <button onclick="closeNewLeadModal()" class="text-neutral-400 hover:text-white text-lg">✕</button>
+    </div>
+    <form onsubmit="handleManualLeadSubmit(event)" class="space-y-3.5 text-xs">
+      <div>
+        <label class="block text-neutral-400 mb-1">Ad Soyad *</label>
+        <input type="text" id="mFullName" required class="w-full px-3.5 py-2.5 rounded-xl bg-black/80 border border-white/10 text-white focus:border-white focus:outline-none">
+      </div>
+      <div>
+        <label class="block text-neutral-400 mb-1">Şirket / Kurum *</label>
+        <input type="text" id="mCompany" required class="w-full px-3.5 py-2.5 rounded-xl bg-black/80 border border-white/10 text-white focus:border-white focus:outline-none">
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-neutral-400 mb-1">E-Posta</label>
+          <input type="email" id="mEmail" class="w-full px-3.5 py-2.5 rounded-xl bg-black/80 border border-white/10 text-white focus:border-white focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-neutral-400 mb-1">Telefon *</label>
+          <input type="tel" id="mPhone" required class="w-full px-3.5 py-2.5 rounded-xl bg-black/80 border border-white/10 text-white focus:border-white focus:outline-none">
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-neutral-400 mb-1">İlgilenilen Hizmet</label>
+          <select id="mService" class="w-full px-3 py-2.5 rounded-xl bg-black/80 border border-white/10 text-white focus:border-white focus:outline-none">
+            <option>Mobil Uygulama (iOS & Android)</option>
+            <option>Yönetim Paneli (CRM / ERP)</option>
+            <option>Web Sitesi & E-Ticaret</option>
+            <option>Süreç Otomasyonu & Entegrasyon</option>
+            <option>Masaüstü & Özel Donanım Yazılımı</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-neutral-400 mb-1">Bütçe Aralığı</label>
+          <select id="mBudget" class="w-full px-3 py-2.5 rounded-xl bg-black/80 border border-white/10 text-white focus:border-white focus:outline-none">
+            <option>50.000 ₺ - 100.000 ₺</option>
+            <option>100.000 ₺ - 250.000 ₺</option>
+            <option>250.000 ₺ - 500.000 ₺</option>
+            <option>500.000 ₺+</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label class="block text-neutral-400 mb-1">Proje Notu / Mesaj</label>
+        <textarea id="mMessage" rows="3" class="w-full px-3.5 py-2 rounded-xl bg-black/80 border border-white/10 text-white focus:border-white focus:outline-none"></textarea>
+      </div>
+      <div class="pt-2 flex justify-end gap-2">
+        <button type="button" onclick="closeNewLeadModal()" class="px-4 py-2 rounded-xl border border-white/15 hover:bg-white/10">İptal</button>
+        <button type="submit" class="px-5 py-2 rounded-xl bg-white text-black font-bold">Kaydet</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ==================== NOTIFICATION TOAST ==================== -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none p-4 rounded-2xl bg-white text-black shadow-2xl flex items-center gap-3">
+    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+    <div>
+      <div class="text-xs font-bold font-mono uppercase" id="toastTitle">Yeni Başvuru Alındı!</div>
+      <div class="text-[11px] text-neutral-700" id="toastDesc">Kadir Demir bir talep iletti.</div>
+    </div>
+  </div>
+
+  <!-- ==================== JAVASCRIPT CONTROLLER ==================== -->
+  <script>
+    let leadsData = [];
+    let currentFilter = 'ALL';
+    let knownLeadIds = new Set();
+    let isInitialLoad = true;
+
+    // Real-Time Clock
+    function updateClock() {
+      const now = new Date();
+      const el = document.getElementById('liveClock');
+      if (el) el.textContent = now.toLocaleTimeString('tr-TR');
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Theme Switcher (Dark / Light)
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.classList.contains('dark');
+      if (isDark) {
+        html.classList.remove('dark');
+        html.classList.add('light-theme');
+        document.body.classList.remove('bg-[#0A0A0A]', 'text-white');
+        document.body.classList.add('bg-[#F8F9FA]', 'text-[#0F172A]');
+        document.getElementById('themeIcon').textContent = '🌙';
+        document.querySelectorAll('.logo-invertible').forEach(img => img.style.filter = 'invert(1)');
+      } else {
+        html.classList.add('dark');
+        html.classList.remove('light-theme');
+        document.body.classList.add('bg-[#0A0A0A]', 'text-white');
+        document.body.classList.remove('bg-[#F8F9FA]', 'text-[#0F172A]');
+        document.getElementById('themeIcon').textContent = '☀️';
+        document.querySelectorAll('.logo-invertible').forEach(img => img.style.filter = 'none');
+      }
+    }
+
+    // Play pleasant notification audio chime using Web Audio API
+    function playChime() {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15); // A5
+        gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.45);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.45);
+      } catch(e) {}
+    }
+
+    function showToast(title, desc) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastTitle').textContent = title;
+      document.getElementById('toastDesc').textContent = desc;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-24', 'opacity-0');
+      }, 3500);
+    }
+
+    // Fetch Leads from PyWebView or Local HTTP Server
+    async function fetchLeads() {
+      try {
+        let leads = [];
+        if (window.pywebview && window.pywebview.api) {
+          leads = await window.pywebview.api.get_leads();
+        } else {
+          // Direct HTTP fallback
+          const res = await fetch('http://127.0.0.1:4848/api/leads');
+          if (res.ok) leads = await res.json();
+        }
+
+        if (Array.isArray(leads)) {
+          // Detect brand new leads for chime & toast
+          if (!isInitialLoad) {
+            leads.forEach(l => {
+              if (!knownLeadIds.has(l.id)) {
+                playChime();
+                showToast("Yeni Başvuru Geldi!", `${l.full_name} (${l.company})`);
+              }
+            });
+          }
+          knownLeadIds = new Set(leads.map(l => l.id));
+          isInitialLoad = false;
+          leadsData = leads;
+          updateMetrics();
+          renderLeads();
+        }
+      } catch(err) {
+        console.error("fetchLeads error:", err);
+      }
+    }
+
+    function updateMetrics() {
+      const total = leadsData.length;
+      const newCount = leadsData.filter(l => l.status === 'Yeni').length;
+      const inReview = leadsData.filter(l => l.status === 'İnceleniyor' || l.status === 'Teklif Verildi').length;
+      const won = leadsData.filter(l => l.status === 'Kazanıldı').length;
+
+      document.getElementById('statTotal').textContent = total;
+      document.getElementById('statNew').textContent = newCount;
+      document.getElementById('statInReview').textContent = inReview;
+      document.getElementById('statWon').textContent = won;
+
+      const rate = total > 0 ? Math.round((won / total) * 100) : 0;
+      document.getElementById('statRate').textContent = `%${rate}`;
+    }
+
+    function setStatusFilter(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-tab').forEach(b => {
+        b.classList.remove('bg-white', 'text-black', 'border-white');
+        b.classList.add('border-white/10', 'text-neutral-400');
+      });
+      const activeBtn = document.getElementById(filter === 'Teklif Verildi' ? 'filter-Teklif' : `filter-${filter}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('border-white/10', 'text-neutral-400');
+        activeBtn.classList.add('bg-white', 'text-black', 'border-white');
+      }
+      renderLeads();
+    }
+
+    function renderLeads() {
+      const query = (document.getElementById('searchInput').value || '').toLowerCase();
+      const container = document.getElementById('leadsList');
+      const empty = document.getElementById('emptyState');
+
+      const filtered = leadsData.filter(lead => {
+        const matchesFilter = 
+          currentFilter === 'ALL' ? true :
+          currentFilter === 'STAR' ? lead.is_starred === 1 :
+          lead.status === currentFilter;
+
+        const hay = `${lead.full_name} ${lead.company} ${lead.email} ${lead.phone} ${lead.service_interest} ${lead.message} ${lead.notes}`.toLowerCase();
+        const matchesQuery = query === '' || hay.includes(query);
+
+        return matchesFilter && matchesQuery;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+      }
+      empty.classList.add('hidden');
+
+      container.innerHTML = filtered.map(lead => {
+        const statusColors = {
+          'Yeni': 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
+          'İnceleniyor': 'bg-amber-500/15 text-amber-400 border-amber-500/30',
+          'Teklif Verildi': 'bg-blue-500/15 text-blue-400 border-blue-500/30',
+          'Kazanıldı': 'bg-purple-500/15 text-purple-300 border-purple-500/30',
+          'Arşiv': 'bg-neutral-500/15 text-neutral-400 border-neutral-500/30'
+        };
+        const stClass = statusColors[lead.status] || 'bg-white/10 text-white border-white/20';
+
+        // Clean phone for whatsapp
+        const rawPhone = (lead.phone || '').replace(/[^0-9]/g, '');
+        const waLink = rawPhone ? `https://wa.me/${rawPhone.startsWith('90') ? rawPhone : '90' + rawPhone}` : '#';
+
+        return `
+          <div class="p-5 rounded-2xl bg-[#111111] border border-white/10 hover:border-white/25 transition-all shadow-md space-y-4">
+            
+            <!-- Lead Top Row: Status, Star, Name, Company, Date -->
+            <div class="flex items-start justify-between gap-3 flex-wrap sm:flex-nowrap">
+              <div class="flex items-center gap-3">
+                <button onclick="toggleStar(${lead.id})" class="text-base transition-transform hover:scale-125 ${lead.is_starred ? 'text-amber-400' : 'text-neutral-600 hover:text-neutral-400'}">
+                  ${lead.is_starred ? '★' : '☆'}
+                </button>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h4 class="text-sm font-bold text-white">${escapeHtml(lead.full_name)}</h4>
+                    <span class="text-xs font-medium text-neutral-400">@ ${escapeHtml(lead.company)}</span>
+                  </div>
+                  <div class="text-[11px] font-mono text-neutral-500 mt-0.5">${lead.created_at || ''}</div>
+                </div>
+              </div>
+
+              <!-- Status Dropdown & Delete -->
+              <div class="flex items-center gap-2">
+                <span class="badge-pill border ${stClass}">
+                  <span class="w-1.5 h-1.5 rounded-full ${lead.status === 'Yeni' ? 'bg-emerald-400 animate-pulse' : 'bg-current'}"></span>
+                  ${lead.status}
+                </span>
+
+                <select onchange="updateLeadStatus(${lead.id}, this.value)" class="text-xs px-2.5 py-1 rounded-lg bg-black/80 border border-white/15 text-white focus:outline-none">
+                  <option value="Yeni" ${lead.status === 'Yeni' ? 'selected' : ''}>Yeni</option>
+                  <option value="İnceleniyor" ${lead.status === 'İnceleniyor' ? 'selected' : ''}>İnceleniyor</option>
+                  <option value="Teklif Verildi" ${lead.status === 'Teklif Verildi' ? 'selected' : ''}>Teklif Verildi</option>
+                  <option value="Kazanıldı" ${lead.status === 'Kazanıldı' ? 'selected' : ''}>Kazanıldı</option>
+                  <option value="Arşiv" ${lead.status === 'Arşiv' ? 'selected' : ''}>Arşiv</option>
+                </select>
+
+                <button onclick="deleteLead(${lead.id})" title="Kaydı Sil" class="w-7 h-7 rounded-lg text-neutral-500 hover:text-red-400 hover:bg-red-500/10 flex items-center justify-center transition-all text-xs">
+                  🗑
+                </button>
+              </div>
+            </div>
+
+            <!-- Lead Attributes Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2 border-t border-white/5 text-xs">
+              <div class="flex items-center gap-2 text-neutral-300">
+                <span class="text-neutral-500 font-mono">HİZMET:</span>
+                <span class="font-semibold text-white truncate">${escapeHtml(lead.service_interest || '-')}</span>
+              </div>
+              <div class="flex items-center gap-2 text-neutral-300">
+                <span class="text-neutral-500 font-mono">BÜTÇE:</span>
+                <span class="font-mono font-bold text-emerald-400">${escapeHtml(lead.budget || '-')}</span>
+              </div>
+              <div class="flex items-center gap-3 justify-start sm:justify-end">
+                <a href="${waLink}" target="_blank" class="px-2.5 py-1 rounded-md bg-emerald-600/20 text-emerald-300 hover:bg-emerald-600/30 flex items-center gap-1 font-semibold text-[11px] transition-all">
+                  💬 WhatsApp
+                </a>
+                <a href="tel:${lead.phone}" class="px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 text-white font-mono text-[11px] transition-all">
+                  📞 ${escapeHtml(lead.phone || '')}
+                </a>
+                ${lead.email ? `
+                  <a href="mailto:${lead.email}" class="px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 text-white text-[11px] transition-all">
+                    ✉️ E-Posta
+                  </a>
+                ` : ''}
+              </div>
+            </div>
+
+            <!-- Customer Message Box -->
+            ${lead.message ? `
+              <div class="p-3 rounded-xl bg-black/40 border border-white/5 text-xs text-neutral-300 font-light leading-relaxed">
+                <span class="text-[10px] font-mono font-bold uppercase text-neutral-500 block mb-1">MÜŞTERİ TALEBİ / AÇIKLAMA:</span>
+                ${escapeHtml(lead.message)}
+              </div>
+            ` : ''}
+
+            <!-- Internal Team Note Input -->
+            <div class="flex items-center gap-2 pt-1">
+              <span class="text-[10px] font-mono text-neutral-500 shrink-0">EKİP NOTU:</span>
+              <input type="text" value="${escapeHtml(lead.notes || '')}" onblur="updateLeadNotes(${lead.id}, this.value)" placeholder="Bu müşteriyle ilgili ekip içi not ekleyin..." class="flex-1 px-3 py-1.5 rounded-lg bg-black/60 border border-white/10 text-xs text-neutral-200 placeholder:text-neutral-600 focus:border-white focus:outline-none transition-all">
+            </div>
+
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Lead Actions
+    async function updateLeadStatus(id, newStatus) {
+      if (window.pywebview && window.pywebview.api) {
+        await window.pywebview.api.update_status(id, newStatus);
+      }
+      fetchLeads();
+    }
+
+    async function updateLeadNotes(id, notes) {
+      if (window.pywebview && window.pywebview.api) {
+        await window.pywebview.api.update_notes(id, notes);
+      }
+    }
+
+    async function toggleStar(id) {
+      if (window.pywebview && window.pywebview.api) {
+        await window.pywebview.api.toggle_star(id);
+      }
+      fetchLeads();
+    }
+
+    async function deleteLead(id) {
+      if (!confirm('Bu başvuruyu silmek istediğinizden emin misiniz?')) return;
+      if (window.pywebview && window.pywebview.api) {
+        await window.pywebview.api.delete_lead(id);
+      }
+      fetchLeads();
+    }
+
+    async function exportCsv() {
+      if (window.pywebview && window.pywebview.api) {
+        const res = await window.pywebview.api.export_csv();
+        if (res && res.success) {
+          alert(`Tüm başvurular başarıyla Masaüstünüze kaydedildi:\n${res.filename}`);
+        }
+      }
+    }
+
+    // Manual Lead Creation
+    const modal = document.getElementById('newLeadModal');
+    function openNewLeadModal() { modal.showModal(); }
+    function closeNewLeadModal() { modal.close(); }
+
+    async function handleManualLeadSubmit(e) {
+      e.preventDefault();
+      const payload = {
+        full_name: document.getElementById('mFullName').value,
+        company: document.getElementById('mCompany').value,
+        email: document.getElementById('mEmail').value,
+        phone: document.getElementById('mPhone').value,
+        service_interest: document.getElementById('mService').value,
+        budget: document.getElementById('mBudget').value,
+        message: document.getElementById('mMessage').value
+      };
+
+      if (window.pywebview && window.pywebview.api) {
+        await window.pywebview.api.add_lead(payload);
+      } else {
+        await fetch('http://127.0.0.1:4848/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      }
+
+      closeNewLeadModal();
+      document.getElementById('mFullName').value = '';
+      document.getElementById('mCompany').value = '';
+      document.getElementById('mEmail').value = '';
+      document.getElementById('mPhone').value = '';
+      document.getElementById('mMessage').value = '';
+      fetchLeads();
+    }
+
+    // Simulate Realistic Website Form Submission
+    async function triggerSimulatedLead() {
+      const sampleNames = ["Volkan Öztürk", "Deniz Şahin", "Berk Yıldız", "Merve Aydın", "Efe Çelik"];
+      const sampleCompanies = ["Öztürk Otomotiv", "Şahin Tekstil", "Yıldız Medya & Ajans", "Aydın Lojistik", "Çelik E-Ticaret"];
+      const sampleServices = [
+        "Mobil Uygulama Geliştirme (iOS & Android)",
+        "Şirket İçi Yönetim Panelleri (CRM / ERP)",
+        "Süreç Otomasyonu & Entegrasyon",
+        "Özel Web Tabanlı Yazılım Altyapısı"
+      ];
+      const sampleBudgets = ["100.000 ₺ - 250.000 ₺", "250.000 ₺ - 500.000 ₺", "500.000 ₺+"];
+      const sampleMessages = [
+        "Mevcut sistemlerimiz çok yavaş, personellerimiz için hızlı bir mobil saha yönetim uygulaması talep ediyoruz.",
+        "Web sitemiz ve şubelerimizdeki siparişlerin tek ekranda toplanacağı bir CRM paneli için görüşmek istiyoruz.",
+        "Excel ile stok ve kasa tutmaktan kurtulmak istiyoruz, acil toplantı rica ediyoruz."
+      ];
+
+      const rand = Math.floor(Math.random() * sampleNames.length);
+      const testLead = {
+        fullName: sampleNames[rand],
+        company: sampleCompanies[rand],
+        email: `${sampleNames[rand].toLowerCase().replace(/[^a-z]/g, '')}@${sampleCompanies[rand].toLowerCase().replace(/[^a-z]/g, '')}.com`,
+        phone: `+90 53${Math.floor(10 + Math.random() * 89)} ${Math.floor(100 + Math.random() * 899)} ${Math.floor(10 + Math.random() * 89)} ${Math.floor(10 + Math.random() * 89)}`,
+        serviceInterest: sampleServices[rand % sampleServices.length],
+        budget: sampleBudgets[rand % sampleBudgets.length],
+        message: sampleMessages[rand % sampleMessages.length]
+      };
+
+      try {
+        await fetch('http://127.0.0.1:4848/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(testLead)
+        });
+        fetchLeads();
+      } catch(err) {
+        console.error(err);
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Polling every 2.5 seconds to receive leads live from website!
+    window.addEventListener('pywebviewready', () => {
+      fetchLeads();
+      setInterval(fetchLeads, 2500);
+    });
+    // Fallback if loaded directly
+    setTimeout(() => {
+      fetchLeads();
+      setInterval(fetchLeads, 2500);
+    }, 800);
+  </script>
+</body>
+</html>

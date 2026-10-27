@@ -2,3 +2,9 @@ node_modules/
 .DS_Store
 Thumbs.db
 *.log
+m2n_admin_app/.venv/
+m2n_admin_app/build/
+m2n_admin_app/dist/
+m2n_admin_app/*.spec
+*.db
+M2N_Panel.exe

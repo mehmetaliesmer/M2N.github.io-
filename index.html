@@ -2506,12 +2506,36 @@
       btnText.textContent = "Gönderiliyor...";
       btnArrow.textContent = "⋯";
 
+      const leadData = {
+        fullName: document.getElementById('fullName')?.value || '',
+        company: document.getElementById('company')?.value || '',
+        email: document.getElementById('email')?.value || '',
+        phone: document.getElementById('phone')?.value || '',
+        serviceInterest: document.getElementById('serviceInterest')?.value || '',
+        message: document.getElementById('message')?.value || '',
+        timestamp: new Date().toISOString()
+      };
+
+      // Send directly to M2N Desktop Management Panel (Port 4848)
+      fetch('http://127.0.0.1:4848/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(leadData)
+      }).catch(() => {
+        // Fallback: save to localStorage if desktop panel is currently closed
+        try {
+          const offlineLeads = JSON.parse(localStorage.getItem('m2n_offline_leads') || '[]');
+          offlineLeads.push(leadData);
+          localStorage.setItem('m2n_offline_leads', JSON.stringify(offlineLeads));
+        } catch(err) {}
+      });
+
       setTimeout(() => {
         btnText.textContent = "Gönderildi";
         btnArrow.textContent = "→";
         successNotice.classList.remove('hidden');
         document.getElementById('contactForm').reset();
-      }, 900);
+      }, 700);
     }
 
     const kvkkModal = document.getElementById('kvkkModal');
