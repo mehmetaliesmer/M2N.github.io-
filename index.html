@@ -1060,27 +1060,27 @@
           </div>
         </div>
 
-        <!-- Right: Rock-Solid Stable Detail Card (NO SHIFTING, FIXED HEIGHT) -->
+        <!-- Right: Rock-Solid Stable Detail Card (Responsive & Never Overflows) -->
         <div class="lg:col-span-7">
-          <div id="cloverDetailCard" class="p-6 sm:p-8 rounded-3xl bg-[#0D0D0D] border border-white/20 h-[380px] min-h-[380px] flex flex-col justify-between shadow-2xl relative">
+          <div id="cloverDetailCard" class="p-5 sm:p-8 rounded-3xl bg-[#0D0D0D] border border-white/20 h-auto min-h-0 lg:min-h-[420px] flex flex-col justify-between shadow-2xl relative">
             
             <div id="cloverContentWrap" class="transition-opacity duration-150">
-              <div class="flex items-center justify-between pb-3 mb-2.5 border-b border-white/10">
-                <span id="cloverBadge" class="px-3 py-1 rounded-full bg-white text-black text-[11px] font-extrabold uppercase tracking-wider shadow-md">
+              <div class="flex items-center justify-between gap-2.5 pb-3 mb-2.5 border-b border-white/10 flex-wrap sm:flex-nowrap">
+                <span id="cloverBadge" class="px-2.5 sm:px-3 py-1 rounded-full bg-white text-black text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider shadow-md shrink-0">
                   ★ POPÜLER TERCİH • BÜYÜYEN KOBİ
                 </span>
-                <span id="cloverLeafNum" class="text-xs font-mono text-neutral-400">ÖLÇEK // 02</span>
+                <span id="cloverLeafNum" class="text-[11px] sm:text-xs font-mono text-neutral-400 shrink-0">ÖLÇEK // 02</span>
               </div>
 
-              <!-- Fixed Height Title Container: Prevents ANY title shift between leaves -->
-              <div class="min-h-[54px] flex items-center mb-2">
-                <h3 id="cloverTitle" class="text-lg sm:text-xl font-bold text-white leading-snug">
+              <!-- Title Container: Responsive on mobile, stable on desktop -->
+              <div class="min-h-0 lg:min-h-[54px] flex items-center mb-2">
+                <h3 id="cloverTitle" class="text-base sm:text-xl font-bold text-white leading-snug">
                   Saha Ekibi, Şubeler ve Kasa Tek Ekranda
                 </h3>
               </div>
 
-              <!-- Fixed Height Description Container -->
-              <div class="min-h-[42px] flex items-center mb-3.5">
+              <!-- Description Container: Responsive on mobile, stable on desktop -->
+              <div class="min-h-0 lg:min-h-[42px] flex items-center mb-3.5">
                 <p id="cloverDesc" class="text-xs sm:text-sm text-neutral-300 font-light leading-relaxed">
                   Birden fazla personeli veya sahası olan firmalar için Excel karmaşasını bitiriyoruz. Kim nerede, kasa ve siparişler ne durumda anlık görün.
                 </p>
@@ -1102,12 +1102,12 @@
               </div>
             </div>
 
-            <!-- Card Bottom Bar: Fixed and rock solid -->
-            <div class="pt-3.5 border-t border-white/10 flex items-center justify-between">
-              <div id="cloverRoiBox" class="text-xs text-neutral-300 font-light">
+            <!-- Card Bottom Bar: Always 100% inside card frame, beautifully responsive -->
+            <div class="pt-3.5 mt-4 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div id="cloverRoiBox" class="text-xs text-neutral-300 font-light leading-relaxed">
                 <strong class="text-white font-medium">Net Faydası:</strong> Şube ve saha operasyonunu tek ekrana bağlar; personel hatalarını sıfırlar.
               </div>
-              <button id="cloverCtaBtn" type="button" onclick="selectServiceAndScroll('Kuruma Özel Yönetim Panelleri')" class="px-5 py-2.5 rounded-xl bg-white text-black hover:bg-neutral-200 text-xs font-bold transition-all shadow-md shrink-0 ml-4">
+              <button id="cloverCtaBtn" type="button" onclick="selectServiceAndScroll('Kuruma Özel Yönetim Panelleri')" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-white text-black hover:bg-neutral-200 text-xs font-bold transition-all shadow-md shrink-0 text-center flex items-center justify-center">
                 Şirket Paketini Başlat ↗
               </button>
             </div>
