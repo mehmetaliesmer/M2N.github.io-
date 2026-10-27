@@ -685,12 +685,19 @@
       background: #000000 !important;
       color: #FFFFFF !important;
     }
-    html.light-theme #cloverCtaBtn {
-      background: #000000 !important;
+    html.light-theme #cloverCtaBtn,
+    html.light-theme #cloverCtaBtn * {
+      background-color: #000000 !important;
       color: #FFFFFF !important;
     }
-    html.light-theme #cloverCtaBtn:hover {
-      background: #27272A !important;
+    html.light-theme #cloverCtaBtn:hover,
+    html.light-theme #cloverCtaBtn:hover * {
+      background-color: #27272A !important;
+    }
+    html.light-theme .flip-card-back button[onclick*="selectServiceAndScroll"],
+    html.light-theme .flip-card-back button[onclick*="selectServiceAndScroll"] * {
+      background-color: #000000 !important;
+      color: #FFFFFF !important;
     }
 
     /* Section 03: Hakkımızda */
@@ -717,11 +724,19 @@
     html.light-theme #contact textarea::placeholder {
       color: #71717A !important;
     }
-    html.light-theme #contact button[type="submit"] {
+    html.light-theme #contact button[type="submit"],
+    html.light-theme #contact button[type="submit"] *,
+    html.light-theme #submitBtn,
+    html.light-theme #submitBtn * {
       background-color: #000000 !important;
       color: #FFFFFF !important;
+      fill: #FFFFFF !important;
+      stroke: #FFFFFF !important;
     }
-    html.light-theme #contact button[type="submit"]:hover {
+    html.light-theme #contact button[type="submit"]:hover,
+    html.light-theme #contact button[type="submit"]:hover *,
+    html.light-theme #submitBtn:hover,
+    html.light-theme #submitBtn:hover * {
       background-color: #27272A !important;
     }
 
