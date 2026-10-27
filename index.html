@@ -361,43 +361,68 @@
       color: #000000 !important;
     }
 
-    /* Refined Luxury POPÜLER Pill Badge Inside Clover Leaf 2 */
+    /* Refined Luxury Oval Pill Badges for POPÜLER and Leaf Numbers (01, 03, 04) */
+    .leaf-badge,
     .populer-pill-badge {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.25rem;
-      padding: 0.2rem 0.6rem;
-      border-radius: 9999px;
-      font-size: 0.62rem;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      padding: 0.18rem 0.62rem;
+      border-radius: 9999px !important;
       line-height: 1;
       margin-bottom: 0.35rem;
       transition: all 0.25s ease;
     }
+    .populer-pill-badge {
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .leaf-badge {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+
+    /* Dark Mode Active Leaf (White Leaf) -> Black Oval Pill */
+    .m2n-clover-leaf.active-leaf .leaf-badge,
     .m2n-clover-leaf.active-leaf .populer-pill-badge {
       background-color: #000000 !important;
       color: #FFFFFF !important;
       border: 1px solid rgba(0, 0, 0, 0.8) !important;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16) !important;
+      border-radius: 9999px !important;
     }
+
+    /* Dark Mode Inactive Leaf (Dark Leaf) -> Sleek Translucent Oval Pill */
+    .m2n-clover-leaf:not(.active-leaf) .leaf-badge,
     .m2n-clover-leaf:not(.active-leaf) .populer-pill-badge {
       background-color: rgba(255, 255, 255, 0.08) !important;
       color: #FFFFFF !important;
       border: 1px solid rgba(255, 255, 255, 0.22) !important;
+      border-radius: 9999px !important;
     }
+
+    /* Light Mode Active Leaf (Black Leaf) -> White Oval Pill */
+    html.light-theme .m2n-clover-leaf.active-leaf .leaf-badge,
     html.light-theme .m2n-clover-leaf.active-leaf .populer-pill-badge {
       background-color: #FFFFFF !important;
       color: #000000 !important;
       border: 1px solid rgba(255, 255, 255, 0.95) !important;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25) !important;
+      border-radius: 9999px !important;
     }
+
+    /* Light Mode Inactive Leaf (Soft Gray Leaf) -> Clean Subtle Oval Pill */
+    html.light-theme .m2n-clover-leaf:not(.active-leaf) .leaf-badge,
     html.light-theme .m2n-clover-leaf:not(.active-leaf) .populer-pill-badge {
       background-color: rgba(0, 0, 0, 0.06) !important;
-      color: #000000 !important;
-      border: 1px solid rgba(0, 0, 0, 0.18) !important;
+      color: #0F172A !important;
+      border: 1px solid rgba(0, 0, 0, 0.16) !important;
+      border-radius: 9999px !important;
     }
 
     /* Exact M2N Logo 4-Petal Shapes (1:1 with Official M2N Logo Emblem)
@@ -623,21 +648,14 @@
       background: #EAEAEF !important;
       border-color: rgba(0, 0, 0, 0.45) !important;
     }
-    html.light-theme .m2n-clover-leaf .leaf-badge {
-      color: #000000 !important;
-    }
     html.light-theme .m2n-clover-leaf .leaf-title {
-      color: #000000 !important;
+      color: #0F172A !important;
     }
     html.light-theme .m2n-clover-leaf.active-leaf {
       background: #000000 !important;
       color: #FFFFFF !important;
       border-color: #000000 !important;
       box-shadow: 0 0 35px rgba(0, 0, 0, 0.25) !important;
-    }
-    html.light-theme .m2n-clover-leaf.active-leaf .leaf-badge {
-      background: #FFFFFF !important;
-      color: #000000 !important;
     }
     html.light-theme .m2n-clover-leaf.active-leaf .leaf-title {
       color: #FFFFFF !important;
@@ -1409,10 +1427,6 @@
     <!-- Architectural Subtle Dotted Matrix -->
     <div class="absolute inset-0 bg-tech-dots pointer-events-none z-0"></div>
 
-    <!-- Subtle Ambient Energy Rings behind Clover (Futuristic Radar Resonance) -->
-    <div class="absolute top-1/2 left-[25%] -translate-x-1/2 -translate-y-1/2 w-80 h-80 sm:w-96 sm:h-96 rounded-full border border-white/[0.05] pointer-events-none z-0 animate-[pulseRingSlow_10s_ease-in-out_infinite]"></div>
-    <div class="absolute top-1/2 left-[25%] -translate-x-1/2 -translate-y-1/2 w-[440px] h-[440px] rounded-full border border-white/[0.025] pointer-events-none z-0 animate-[pulseRingSlow_14s_ease-in-out_infinite_3s]"></div>
-
     <!-- Ambient Corner Glowing Orbs -->
     <div class="ambient-orb top-10 right-10 w-80 h-80 bg-white/[0.025] z-0"></div>
 
@@ -1460,7 +1474,7 @@
 
             <!-- Leaf 1: Top-Left (Esnaf) -->
             <div id="leaf-1" onclick="selectCloverLeaf(1)" class="m2n-clover-leaf leaf-tl">
-              <span class="leaf-badge text-xs font-mono font-bold mb-1">01</span>
+              <span class="leaf-badge">01</span>
               <span class="leaf-title text-xs sm:text-sm font-bold leading-tight">Esnaf & Butik</span>
             </div>
 
@@ -1472,13 +1486,13 @@
 
             <!-- Leaf 3: Bottom-Left (Zincir) -->
             <div id="leaf-3" onclick="selectCloverLeaf(3)" class="m2n-clover-leaf leaf-bl">
-              <span class="leaf-badge text-xs font-mono font-bold mb-1">03</span>
+              <span class="leaf-badge">03</span>
               <span class="leaf-title text-xs sm:text-sm font-bold leading-tight">Zincir Mağaza</span>
             </div>
 
             <!-- Leaf 4: Bottom-Right (Holding) -->
             <div id="leaf-4" onclick="selectCloverLeaf(4)" class="m2n-clover-leaf leaf-br">
-              <span class="leaf-badge text-xs font-mono font-bold mb-1">04</span>
+              <span class="leaf-badge">04</span>
               <span class="leaf-title text-xs sm:text-sm font-bold leading-tight">Holding</span>
             </div>
 
