@@ -5,7 +5,6 @@ import sqlite3
 import threading
 import time
 from datetime import datetime
-from http.server import HTTPServer, BaseHTTPRequestHandler
 import urllib.request
 import webview
 
@@ -24,7 +23,7 @@ DB_PATH = os.path.join(BASE_DIR, 'leads.db')
 UI_DIR = os.path.join(ASSETS_DIR, 'ui')
 INDEX_HTML = os.path.join(UI_DIR, 'index.html')
 
-CLOUD_STREAM_URL = 'https://ntfy.sh/m2n_leads_prod_live_2026/json?since=all'
+CLOUD_POLL_URL = 'https://ntfy.sh/m2n_leads_prod_live_2026/json?poll=1&since=all'
 
 def get_db():
     conn = sqlite3.connect(DB_PATH)
@@ -37,6 +36,7 @@ def init_db():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS leads (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            msg_id TEXT UNIQUE,
             full_name TEXT NOT NULL,
             company TEXT NOT NULL,
             email TEXT,
@@ -54,7 +54,7 @@ def init_db():
     conn.close()
 
 
-def insert_lead_if_new(lead_dict):
+def insert_lead(msg_id, lead_dict):
     full_name = (lead_dict.get('fullName') or lead_dict.get('full_name') or 'İsimsiz').strip()
     company = (lead_dict.get('company') or '-').strip()
     email = (lead_dict.get('email') or '').strip()
@@ -62,49 +62,64 @@ def insert_lead_if_new(lead_dict):
     service_interest = (lead_dict.get('serviceInterest') or lead_dict.get('service_interest') or 'Belirtilmedi').strip()
     budget = (lead_dict.get('budget') or '-').strip()
     message = (lead_dict.get('message') or '').strip()
-    created_at = lead_dict.get('timestamp') or datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    created_at = lead_dict.get('timestamp') or datetime.now().strftime('%d.%m.%Y %H:%M:%S')
 
     conn = get_db()
     cursor = conn.cursor()
-    cursor.execute('SELECT id FROM leads WHERE full_name = ? AND phone = ? AND message = ?', (full_name, phone, message))
-    if not cursor.fetchone():
+    try:
         cursor.execute('''
-            INSERT INTO leads (full_name, company, email, phone, service_interest, budget, message, status, notes, is_starred, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, 'Yeni', '', 1, ?)
-        ''', (full_name, company, email, phone, service_interest, budget, message, created_at))
+            INSERT INTO leads (msg_id, full_name, company, email, phone, service_interest, budget, message, status, notes, is_starred, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Yeni', '', 1, ?)
+        ''', (msg_id, full_name, company, email, phone, service_interest, budget, message, created_at))
         conn.commit()
         lead_id = cursor.lastrowid
         conn.close()
         return lead_id
-    conn.close()
-    return None
+    except sqlite3.IntegrityError:
+        # Already exists by msg_id
+        conn.close()
+        return None
 
 
-# Background Cloud Synchronizer: Continuous Streaming for sub-second real-time delivery
-def sync_cloud_leads_loop():
+# Background Rapid Cloud Poller: Polls every 0.7s without buffer delays for sub-second arrival
+def fast_cloud_poll_loop():
+    seen_ids = set()
+    # Pre-fill seen_ids from database
+    try:
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute('SELECT msg_id FROM leads WHERE msg_id IS NOT NULL')
+        for r in cursor.fetchall():
+            if r['msg_id']:
+                seen_ids.add(r['msg_id'])
+        conn.close()
+    except Exception:
+        pass
+
     while True:
         try:
             req = urllib.request.Request(
-                CLOUD_STREAM_URL,
-                headers={'User-Agent': 'M2N-Desktop-Vault/1.0'}
+                CLOUD_POLL_URL,
+                headers={'User-Agent': 'M2N-Desktop-Vault/1.0', 'Cache-Control': 'no-cache'}
             )
-            with urllib.request.urlopen(req, timeout=45) as resp:
-                while True:
-                    line = resp.readline()
+            with urllib.request.urlopen(req, timeout=5) as resp:
+                content = resp.read().decode('utf-8')
+                for line in content.strip().split('\n'):
                     if not line:
-                        break
-                    line_str = line.decode('utf-8').strip()
-                    if line_str:
-                        try:
-                            obj = json.loads(line_str)
-                            if obj.get('event') == 'message' and 'message' in obj:
-                                raw_msg = obj['message']
-                                lead_data = json.loads(raw_msg)
-                                insert_lead_if_new(lead_data)
-                        except Exception:
-                            pass
+                        continue
+                    try:
+                        obj = json.loads(line)
+                        msg_id = obj.get('id')
+                        if msg_id and msg_id not in seen_ids and obj.get('event') == 'message' and 'message' in obj:
+                            seen_ids.add(msg_id)
+                            raw_msg = obj['message']
+                            lead_data = json.loads(raw_msg)
+                            insert_lead(msg_id, lead_data)
+                    except Exception:
+                        pass
         except Exception:
-            time.sleep(1.5)
+            pass
+        time.sleep(0.7)
 
 
 # PyWebView JS API Bridge
@@ -185,8 +200,8 @@ class M2NJsApi:
 def main():
     init_db()
 
-    # Background cloud HTTPS stream (sub-second real-time delivery from web)
-    cloud_thread = threading.Thread(target=sync_cloud_leads_loop, daemon=True)
+    # Background fast poller (polls every 0.7s without buffer latency)
+    cloud_thread = threading.Thread(target=fast_cloud_poll_loop, daemon=True)
     cloud_thread.start()
 
     api = M2NJsApi()
