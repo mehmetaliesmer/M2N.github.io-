@@ -2531,7 +2531,7 @@
         timestamp: new Date().toLocaleString('tr-TR')
       };
 
-      // 1. Direct Cloud Dispatch (Works seamlessly from live HTTPS GitHub Pages)
+      // Direct Cloud Dispatch (Standard HTTPS - zero browser permission prompts)
       try {
         fetch('https://ntfy.sh/m2n_tech_leads_vault_live', {
           method: 'POST',
@@ -2541,15 +2541,6 @@
           },
           body: JSON.stringify(leadData)
         }).catch(err => console.log('Cloud sync note:', err));
-      } catch(e) {}
-
-      // 2. Local Port Dispatch (if running on same machine)
-      try {
-        fetch('http://127.0.0.1:4848/api/leads', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(leadData)
-        }).catch(() => {});
       } catch(e) {}
 
       setTimeout(() => {
