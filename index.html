@@ -396,7 +396,7 @@
 
     /* ========================================================
        LIGHT MODE / DARK MODE THEME ARCHITECTURE
-       "Light modda siyahlar beyaz, beyazlar siyah"
+       "Light modda siyahlar beyaz, beyazlar siyah" - Pixel-Perfect Monochromatic Inversion
        ======================================================== */
     html.light-theme,
     html.light-theme body {
@@ -404,17 +404,23 @@
       color: #000000 !important;
     }
 
+    /* Selection Colors in Light Mode */
+    html.light-theme ::selection {
+      background-color: #000000 !important;
+      color: #FFFFFF !important;
+    }
+
+    /* All Sections and Hero */
     html.light-theme .fullscreen-snap-section {
       background: #FFFFFF !important;
       border-top-color: rgba(0, 0, 0, 0.1) !important;
       border-bottom-color: rgba(0, 0, 0, 0.1) !important;
     }
-
     html.light-theme #heroSection {
       background-color: #FFFFFF !important;
     }
 
-    /* Invert Hero Dark Shields to Pristine White */
+    /* Hero Shields: Soft Pristine White Gradients */
     html.light-theme #heroRadialShield {
       background: radial-gradient(circle at center, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.65) 50%, transparent 100%) !important;
     }
@@ -425,7 +431,7 @@
       background-color: rgba(0, 0, 0, 0.03) !important;
     }
 
-    /* Text Color Inversions */
+    /* Global Text Inversions */
     html.light-theme .text-white {
       color: #000000 !important;
     }
@@ -438,87 +444,148 @@
       color: #52525B !important;
     }
 
-    /* Background Inversions: Siyahlar Beyaz / Gri */
-    html.light-theme .bg-black,
-    html.light-theme .bg-[#000000],
-    html.light-theme .bg-[#0D0D0D],
-    html.light-theme .bg-[#0C0C0C],
-    html.light-theme .bg-[#141414] {
+    /* All Dark Containers Inverted to Crisp Whites & Soft Silvers */
+    html.light-theme [class*="bg-black"],
+    html.light-theme [class*="bg-[#000000]"],
+    html.light-theme [class*="bg-[#080808]"],
+    html.light-theme [class*="bg-[#0D0D0D]"],
+    html.light-theme [class*="bg-[#0C0C0C]"],
+    html.light-theme [class*="bg-[#141414]"] {
       background-color: #FFFFFF !important;
     }
 
-    html.light-theme .bg-black/80,
-    html.light-theme .bg-black/85,
-    html.light-theme .bg-black/70,
-    html.light-theme .bg-black/60 {
-      background-color: rgba(255, 255, 255, 0.92) !important;
+    /* Hero Floating Badge & Hero 3 Cards & Left Panel Note */
+    html.light-theme #heroSection [class*="bg-black"],
+    html.light-theme #contact [class*="bg-[#0D0D0D]"] {
+      background-color: #F8F8FA !important;
+      border-color: rgba(0, 0, 0, 0.12) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+    }
+    html.light-theme #heroSection [class*="bg-black"] *,
+    html.light-theme #contact [class*="bg-[#0D0D0D]"] * {
+      color: #000000 !important;
+    }
+    html.light-theme #heroSection [class*="bg-black"] .text-neutral-400,
+    html.light-theme #heroSection [class*="bg-black"] .text-neutral-500,
+    html.light-theme #contact [class*="bg-[#0D0D0D]"] .text-neutral-400 {
+      color: #52525B !important;
+    }
+    html.light-theme #heroSection [class*="bg-black"] svg,
+    html.light-theme #contact [class*="bg-[#0D0D0D]"] svg {
+      stroke: #000000 !important;
+      color: #000000 !important;
+    }
+    html.light-theme #heroSection [class*="bg-white"],
+    html.light-theme #contact [class*="bg-white"] {
+      background-color: #000000 !important;
     }
 
-    /* Border Inversions */
-    html.light-theme .border-white/10,
-    html.light-theme .border-white/12,
-    html.light-theme .border-white/15,
-    html.light-theme .border-white/20,
-    html.light-theme .border-white/25,
-    html.light-theme .border-white/35 {
+    /* Section 03 Bottom Stats Outer Container */
+    html.light-theme #about [class*="bg-[#080808]"] {
+      background-color: #F8F8FA !important;
+      border-color: rgba(0, 0, 0, 0.12) !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
+    }
+    html.light-theme #about [class*="divide-white"] {
+      border-color: rgba(0, 0, 0, 0.1) !important;
+    }
+    html.light-theme #about [class*="bg-white/"] {
+      background-color: rgba(0, 0, 0, 0.06) !important;
+      border-color: rgba(0, 0, 0, 0.12) !important;
+    }
+    html.light-theme #about svg {
+      stroke: #000000 !important;
+      color: #000000 !important;
+    }
+
+    /* All White Borders Inverted to Subtle Dark Borders */
+    html.light-theme [class*="border-white"] {
       border-color: rgba(0, 0, 0, 0.12) !important;
     }
 
     /* Invert pure white logos to deep crisp black */
     html.light-theme img[src="logo.png"],
     html.light-theme img[src="m2n-vertical.png"] {
-      filter: invert(1) drop-shadow(0 0 12px rgba(0, 0, 0, 0.15)) !important;
+      filter: invert(1) drop-shadow(0 0 10px rgba(0, 0, 0, 0.12)) !important;
     }
 
-    /* Desktop Floating Navbar */
+    /* Desktop Floating Navbar: Elegant Black Capsule with Light Subtle Shadow (NO HEAVY BLACK SMUDGE) */
     html.light-theme header .bg-white {
       background-color: #000000 !important;
       color: #FFFFFF !important;
-      border-color: rgba(0, 0, 0, 0.3) !important;
+      border-color: rgba(0, 0, 0, 0.25) !important;
+      box-shadow: 0 8px 25px -4px rgba(0, 0, 0, 0.18) !important;
     }
     html.light-theme header .bg-white a {
       color: #FFFFFF !important;
     }
+    html.light-theme header .bg-white a:hover {
+      opacity: 0.75 !important;
+    }
     html.light-theme header .bg-white .bg-black {
       background-color: #FFFFFF !important;
       color: #000000 !important;
+      box-shadow: 0 2px 10px rgba(255, 255, 255, 0.3) !important;
+    }
+    html.light-theme header .bg-white .bg-black svg {
+      stroke: #000000 !important;
     }
 
-    /* Header Logo Pill */
+    /* Header Logo Pill & Theme Toggle Button */
     html.light-theme header a[aria-label="M2N Tech Ana Sayfa"] {
       background-color: rgba(255, 255, 255, 0.95) !important;
       border-color: rgba(0, 0, 0, 0.15) !important;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08) !important;
+    }
+    html.light-theme .theme-toggle-btn {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+      border-color: rgba(0, 0, 0, 0.18) !important;
+      color: #000000 !important;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08) !important;
+    }
+    html.light-theme .theme-toggle-btn svg {
+      color: #000000 !important;
+      stroke: #000000 !important;
     }
 
     /* Section 01: Service Cards in Light Mode */
     html.light-theme .horizontal-service-card {
       background: #FFFFFF !important;
       border-color: rgba(0, 0, 0, 0.12) !important;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06) !important;
     }
     html.light-theme .flip-card-face {
       background: #FFFFFF !important;
       border-color: rgba(0, 0, 0, 0.12) !important;
+    }
+    html.light-theme .flip-card-face svg {
+      stroke: #000000 !important;
+      color: #000000 !important;
     }
     html.light-theme .flip-card-back {
       background: #F8F8FA !important;
       border-color: rgba(0, 0, 0, 0.16) !important;
     }
     html.light-theme .neon-white-border {
-      border-color: rgba(0, 0, 0, 0.5) !important;
+      border-color: rgba(0, 0, 0, 0.4) !important;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.08) !important;
     }
 
-    /* Section 02: 4 Clover Leaves Inversion */
+    /* Section 02: 4 Clover Leaves (CRITICAL FIX FOR INVISIBLE TEXT!) */
     html.light-theme .m2n-clover-leaf {
       background: #F4F4F6 !important;
-      border-color: rgba(0, 0, 0, 0.14) !important;
+      border-color: rgba(0, 0, 0, 0.15) !important;
       color: #000000 !important;
     }
     html.light-theme .m2n-clover-leaf:hover {
+      background: #EAEAEF !important;
       border-color: rgba(0, 0, 0, 0.45) !important;
-      background: #ECECED !important;
+    }
+    html.light-theme .m2n-clover-leaf .leaf-badge {
+      color: #000000 !important;
+    }
+    html.light-theme .m2n-clover-leaf .leaf-title {
+      color: #000000 !important;
     }
     html.light-theme .m2n-clover-leaf.active-leaf {
       background: #000000 !important;
@@ -534,11 +601,15 @@
       color: #FFFFFF !important;
     }
 
-    /* Section 02: Right Detail Card */
+    /* Section 02: Right Detail Card & Checkmark SVGs */
     html.light-theme #cloverDetailCard {
       background-color: #FFFFFF !important;
       border-color: rgba(0, 0, 0, 0.12) !important;
       box-shadow: 0 20px 45px rgba(0, 0, 0, 0.06) !important;
+    }
+    html.light-theme #cloverDetailCard svg {
+      stroke: #000000 !important;
+      color: #000000 !important;
     }
     html.light-theme #cloverBadge {
       background: #000000 !important;
@@ -557,11 +628,6 @@
       background-color: #FFFFFF !important;
       border-color: rgba(0, 0, 0, 0.12) !important;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05) !important;
-    }
-    html.light-theme #about .grid-cols-2 > div,
-    html.light-theme #about .sm\:grid-cols-4 > div {
-      background-color: #F8F8FA !important;
-      border-color: rgba(0, 0, 0, 0.1) !important;
     }
 
     /* Section 04: İletişim Formu */
@@ -627,6 +693,14 @@
     }
     html.light-theme #mobileMenuDropdown .bg-white span {
       color: #FFFFFF !important;
+    }
+    html.light-theme #mobileMenuBtn {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+      border-color: rgba(0, 0, 0, 0.18) !important;
+      color: #000000 !important;
+    }
+    html.light-theme #mobileMenuBtn svg {
+      stroke: #000000 !important;
     }
 
     /* Legal Modals in Light Mode */
