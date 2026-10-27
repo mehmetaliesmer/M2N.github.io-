@@ -24,7 +24,7 @@ DB_PATH = os.path.join(BASE_DIR, 'leads.db')
 UI_DIR = os.path.join(ASSETS_DIR, 'ui')
 INDEX_HTML = os.path.join(UI_DIR, 'index.html')
 
-CLOUD_SYNC_URL = 'https://ntfy.sh/m2n_tech_leads_channel_v1_secure/json?poll=1&since=all'
+CLOUD_SYNC_URL = 'https://ntfy.sh/m2n_tech_leads_vault_live/json?poll=1&since=all'
 
 def get_db():
     conn = sqlite3.connect(DB_PATH)
