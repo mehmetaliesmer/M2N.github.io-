@@ -23,7 +23,7 @@ DB_PATH = os.path.join(BASE_DIR, 'leads.db')
 UI_DIR = os.path.join(ASSETS_DIR, 'ui')
 INDEX_HTML = os.path.join(UI_DIR, 'index.html')
 
-CLOUD_POLL_URL = 'https://ntfy.sh/m2n_leads_prod_live_2026/json?poll=1&since=all'
+CLOUD_POLL_URL = 'https://ntfy.adminforge.de/m2n_tech_leads_vault_2026/json?poll=1&since=all'
 
 def get_db():
     conn = sqlite3.connect(DB_PATH)
@@ -50,6 +50,11 @@ def init_db():
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS deleted_leads (
+            msg_id TEXT PRIMARY KEY
+        )
+    ''')
     conn.commit()
     conn.close()
 
@@ -66,6 +71,23 @@ def insert_lead(msg_id, lead_dict):
 
     conn = get_db()
     cursor = conn.cursor()
+    # Check if already deleted
+    if msg_id:
+        cursor.execute('SELECT msg_id FROM deleted_leads WHERE msg_id = ?', (msg_id,))
+        if cursor.fetchone():
+            conn.close()
+            return None
+
+    # Check for duplicate by msg_id or (full_name + phone + created_at)
+    cursor.execute('''
+        SELECT id FROM leads 
+        WHERE (msg_id = ? AND msg_id IS NOT NULL) 
+           OR (full_name = ? AND phone = ? AND created_at = ?)
+    ''', (msg_id, full_name, phone, created_at))
+    if cursor.fetchone():
+        conn.close()
+        return None
+
     try:
         cursor.execute('''
             INSERT INTO leads (msg_id, full_name, company, email, phone, service_interest, budget, message, status, notes, is_starred, created_at)
@@ -76,12 +98,11 @@ def insert_lead(msg_id, lead_dict):
         conn.close()
         return lead_id
     except sqlite3.IntegrityError:
-        # Already exists by msg_id
         conn.close()
         return None
 
 
-# Background Rapid Cloud Poller: Polls every 0.7s without buffer delays for sub-second arrival
+# Background Rapid Cloud Poller: Polls every 1.2s without buffer delays for sub-second arrival
 def fast_cloud_poll_loop():
     seen_ids = set()
     # Pre-fill seen_ids from database
@@ -89,6 +110,10 @@ def fast_cloud_poll_loop():
         conn = get_db()
         cursor = conn.cursor()
         cursor.execute('SELECT msg_id FROM leads WHERE msg_id IS NOT NULL')
+        for r in cursor.fetchall():
+            if r['msg_id']:
+                seen_ids.add(r['msg_id'])
+        cursor.execute('SELECT msg_id FROM deleted_leads')
         for r in cursor.fetchall():
             if r['msg_id']:
                 seen_ids.add(r['msg_id'])
@@ -102,7 +127,7 @@ def fast_cloud_poll_loop():
                 CLOUD_POLL_URL,
                 headers={'User-Agent': 'M2N-Desktop-Vault/1.0', 'Cache-Control': 'no-cache'}
             )
-            with urllib.request.urlopen(req, timeout=5) as resp:
+            with urllib.request.urlopen(req, timeout=4) as resp:
                 content = resp.read().decode('utf-8')
                 for line in content.strip().split('\n'):
                     if not line:
@@ -119,7 +144,7 @@ def fast_cloud_poll_loop():
                         pass
         except Exception:
             pass
-        time.sleep(0.7)
+        time.sleep(1.2)
 
 
 # PyWebView JS API Bridge
@@ -166,6 +191,10 @@ class M2NJsApi:
     def delete_lead(self, lead_id):
         conn = get_db()
         cursor = conn.cursor()
+        cursor.execute('SELECT msg_id FROM leads WHERE id = ?', (lead_id,))
+        row = cursor.fetchone()
+        if row and row['msg_id']:
+            cursor.execute('INSERT OR IGNORE INTO deleted_leads (msg_id) VALUES (?)', (row['msg_id'],))
         cursor.execute('DELETE FROM leads WHERE id = ?', (lead_id,))
         conn.commit()
         conn.close()

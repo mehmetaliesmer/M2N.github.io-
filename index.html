@@ -2531,12 +2531,20 @@
         timestamp: new Date().toLocaleString('tr-TR')
       };
 
-      // Direct Cloud Dispatch (Standard HTTPS - zero headers, zero CORS blocks, instant delivery)
+      // Direct Multi-Cloud Dispatch (Ultra-fast Europe/TR unblocked route + Global backup)
+      const payload = JSON.stringify(leadData);
       try {
+        fetch('https://ntfy.adminforge.de/m2n_tech_leads_vault_2026', {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body: payload
+        }).catch(err => console.log('Primary sync note:', err));
+
         fetch('https://ntfy.sh/m2n_leads_prod_live_2026', {
           method: 'POST',
-          body: JSON.stringify(leadData)
-        }).catch(err => console.log('Sync note:', err));
+          headers: { 'Content-Type': 'text/plain' },
+          body: payload
+        }).catch(() => {});
       } catch(e) {}
 
       setTimeout(() => {
