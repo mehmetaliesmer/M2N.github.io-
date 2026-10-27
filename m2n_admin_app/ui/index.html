@@ -474,16 +474,16 @@
         .replace(/'/g, '&#039;');
     }
 
-    // Polling every 2.5 seconds to receive leads live from website!
+    // Polling every 1 second for instant sub-second delivery
     window.addEventListener('pywebviewready', () => {
       fetchLeads();
-      setInterval(fetchLeads, 2500);
+      setInterval(fetchLeads, 1000);
     });
     // Fallback if loaded directly
     setTimeout(() => {
       fetchLeads();
-      setInterval(fetchLeads, 2500);
-    }, 800);
+      setInterval(fetchLeads, 1000);
+    }, 400);
   </script>
 </body>
 </html>

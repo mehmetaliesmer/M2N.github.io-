@@ -2522,25 +2522,21 @@
       btnArrow.textContent = "⋯";
 
       const leadData = {
-        fullName: document.getElementById('fullName')?.value || '',
-        company: document.getElementById('company')?.value || '',
-        email: document.getElementById('email')?.value || '',
-        phone: document.getElementById('phone')?.value || '',
-        serviceInterest: document.getElementById('serviceInterest')?.value || '',
-        message: document.getElementById('message')?.value || '',
+        fullName: (document.getElementById('fullName')?.value || '').trim(),
+        company: (document.getElementById('company')?.value || '').trim(),
+        email: (document.getElementById('email')?.value || '').trim(),
+        phone: (document.getElementById('phone')?.value || '').trim(),
+        serviceInterest: (document.getElementById('serviceInterest')?.value || '').trim(),
+        message: (document.getElementById('message')?.value || '').trim(),
         timestamp: new Date().toLocaleString('tr-TR')
       };
 
-      // Direct Cloud Dispatch (Standard HTTPS - zero browser permission prompts)
+      // Direct Cloud Dispatch (Standard HTTPS - zero headers, zero CORS blocks, instant delivery)
       try {
-        fetch('https://ntfy.sh/m2n_tech_leads_vault_live', {
+        fetch('https://ntfy.sh/m2n_leads_prod_live_2026', {
           method: 'POST',
-          headers: {
-            'Title': 'M2N Web Basvurusu: ' + leadData.fullName,
-            'Priority': 'high'
-          },
           body: JSON.stringify(leadData)
-        }).catch(err => console.log('Cloud sync note:', err));
+        }).catch(err => console.log('Sync note:', err));
       } catch(e) {}
 
       setTimeout(() => {
@@ -2548,7 +2544,7 @@
         btnArrow.textContent = "✓";
         successNotice.classList.remove('hidden');
         document.getElementById('contactForm').reset();
-      }, 700);
+      }, 500);
     }
 
     const kvkkModal = document.getElementById('kvkkModal');

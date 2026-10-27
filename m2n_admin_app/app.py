@@ -24,7 +24,7 @@ DB_PATH = os.path.join(BASE_DIR, 'leads.db')
 UI_DIR = os.path.join(ASSETS_DIR, 'ui')
 INDEX_HTML = os.path.join(UI_DIR, 'index.html')
 
-CLOUD_SYNC_URL = 'https://ntfy.sh/m2n_tech_leads_vault_live/json?poll=1&since=all'
+CLOUD_STREAM_URL = 'https://ntfy.sh/m2n_leads_prod_live_2026/json?since=all'
 
 def get_db():
     conn = sqlite3.connect(DB_PATH)
@@ -80,93 +80,31 @@ def insert_lead_if_new(lead_dict):
     return None
 
 
-# Background Cloud Synchronizer: Pulls from HTTPS Cloud Channel
+# Background Cloud Synchronizer: Continuous Streaming for sub-second real-time delivery
 def sync_cloud_leads_loop():
     while True:
         try:
-            req = urllib.request.Request(CLOUD_SYNC_URL, headers={'User-Agent': 'M2N-Desktop-App/1.0'})
-            with urllib.request.urlopen(req, timeout=12) as resp:
-                content = resp.read().decode('utf-8')
-                for line in content.strip().split('\n'):
+            req = urllib.request.Request(
+                CLOUD_STREAM_URL,
+                headers={'User-Agent': 'M2N-Desktop-Vault/1.0'}
+            )
+            with urllib.request.urlopen(req, timeout=45) as resp:
+                while True:
+                    line = resp.readline()
                     if not line:
-                        continue
-                    try:
-                        obj = json.loads(line)
-                        if obj.get('event') == 'message' and 'message' in obj:
-                            raw_msg = obj['message']
-                            lead_data = json.loads(raw_msg)
-                            insert_lead_if_new(lead_data)
-                    except Exception:
-                        pass
+                        break
+                    line_str = line.decode('utf-8').strip()
+                    if line_str:
+                        try:
+                            obj = json.loads(line_str)
+                            if obj.get('event') == 'message' and 'message' in obj:
+                                raw_msg = obj['message']
+                                lead_data = json.loads(raw_msg)
+                                insert_lead_if_new(lead_data)
+                        except Exception:
+                            pass
         except Exception:
-            pass
-        time.sleep(3)
-
-
-# Background Local HTTP Server for receiving website form posts on port 4848
-class LeadReceiverHandler(BaseHTTPRequestHandler):
-    def _send_cors_headers(self):
-        self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
-
-    def do_OPTIONS(self):
-        self.send_response(200)
-        self._send_cors_headers()
-        self.end_headers()
-
-    def do_GET(self):
-        if self.path == '/api/leads':
-            conn = get_db()
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM leads ORDER BY created_at DESC')
-            leads = [dict(row) for row in cursor.fetchall()]
-            conn.close()
-
-            self.send_response(200)
-            self._send_cors_headers()
-            self.send_header('Content-Type', 'application/json; charset=utf-8')
-            self.end_headers()
-            self.wfile.write(json.dumps(leads, ensure_ascii=False).encode('utf-8'))
-        elif self.path == '/api/health':
-            self.send_response(200)
-            self._send_cors_headers()
-            self.send_header('Content-Type', 'application/json')
-            self.end_headers()
-            self.wfile.write(json.dumps({'status': 'online', 'service': 'M2N Lead Receiver'}).encode('utf-8'))
-        else:
-            self.send_response(404)
-            self.end_headers()
-
-    def do_POST(self):
-        if self.path == '/api/leads':
-            content_length = int(self.headers.get('Content-Length', 0))
-            post_data = self.rfile.read(content_length).decode('utf-8')
-            try:
-                data = json.loads(post_data)
-                lead_id = insert_lead_if_new(data)
-                self.send_response(200)
-                self._send_cors_headers()
-                self.send_header('Content-Type', 'application/json; charset=utf-8')
-                self.end_headers()
-                self.wfile.write(json.dumps({'success': True, 'lead_id': lead_id}).encode('utf-8'))
-            except Exception as e:
-                self.send_response(400)
-                self._send_cors_headers()
-                self.send_header('Content-Type', 'application/json')
-                self.end_headers()
-                self.wfile.write(json.dumps({'success': False, 'error': str(e)}).encode('utf-8'))
-        else:
-            self.send_response(404)
-            self.end_headers()
-
-    def log_message(self, format, *args):
-        return
-
-
-def start_http_server():
-    server = HTTPServer(('127.0.0.1', 4848), LeadReceiverHandler)
-    server.serve_forever()
+            time.sleep(1.5)
 
 
 # PyWebView JS API Bridge
@@ -247,11 +185,7 @@ class M2NJsApi:
 def main():
     init_db()
 
-    # 1. Background local HTTP server
-    http_thread = threading.Thread(target=start_http_server, daemon=True)
-    http_thread.start()
-
-    # 2. Background cloud HTTPS synchronizer (Pulls live website submissions)
+    # Background cloud HTTPS stream (sub-second real-time delivery from web)
     cloud_thread = threading.Thread(target=sync_cloud_leads_loop, daemon=True)
     cloud_thread.start()
 
