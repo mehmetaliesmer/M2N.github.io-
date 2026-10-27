@@ -1,0 +1,1939 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth bg-[#000000] text-white">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M2N Tech — Fikirden Mağazaya, Kâğıttan Dijitale</title>
+  <meta name="description" content="Mobil uygulamalardan kurumsal yönetim panellerine, süreç otomasyonundan özel yazılımlara kadar uçtan uca teknoloji ortağınız.">
+  
+  <!-- Favicon with official logo -->
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- Inter & Space Grotesk / Plus Jakarta Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Space Grotesk"', 'sans-serif'],
+          },
+          animation: {
+            'marquee': 'marquee 32s linear infinite',
+          },
+          keyframes: {
+            marquee: {
+              '0%': { transform: 'translateX(0%)' },
+              '100%': { transform: 'translateX(-50%)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* ========================================================
+       CRITICAL TYPOGRAPHY PRE-DECLARATIONS (ZERO FOUC / ZERO FONT JUMP ON REFRESH)
+       Sets exact heading and font sizes synchronously before Tailwind/Google Fonts load
+       ======================================================== */
+    html, body {
+      font-family: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .font-display, h1, h2, h3 {
+      font-family: "Space Grotesk", system-ui, -apple-system, sans-serif;
+    }
+    h1 {
+      font-size: 1.875rem;
+      line-height: 1.15;
+    }
+    @media (min-width: 640px) {
+      h1 { font-size: 3rem; }
+    }
+    @media (min-width: 1024px) {
+      h1 { font-size: 3.75rem; }
+    }
+    h2 {
+      font-size: 1.5rem;
+      line-height: 1.25;
+    }
+    @media (min-width: 640px) {
+      h2 { font-size: 2.25rem; }
+    }
+
+    /* ========================================================
+       ARCHITECTURAL CYBER BACKGROUNDS & AMBIENT ANIMATIONS
+       Fills barren dark side voids with subtle high-tech atmosphere
+       ======================================================== */
+    @keyframes ambientBreath {
+      0%, 100% { opacity: 0.35; transform: scale(1); }
+      50% { opacity: 0.70; transform: scale(1.12); }
+    }
+    @keyframes slowBeamGlide {
+      0% { transform: translateX(-120%); }
+      100% { transform: translateX(350%); }
+    }
+    @keyframes slowVerticalBeam {
+      0% { transform: translateY(-120%); }
+      100% { transform: translateY(250%); }
+    }
+    @keyframes pulseRingSlow {
+      0% { transform: scale(0.92); opacity: 0.35; }
+      50% { transform: scale(1.08); opacity: 0.12; }
+      100% { transform: scale(0.92); opacity: 0.35; }
+    }
+
+    /* Architectural Technical Background Grid with Vignette */
+    .bg-tech-grid {
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, black 20%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 50%, black 20%, transparent 80%);
+    }
+
+    /* Architectural Technical Dots Pattern */
+    .bg-tech-dots {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 25%, transparent 85%);
+      -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 25%, transparent 85%);
+    }
+
+    /* Traveling Light Beam along border */
+    .light-beam-h {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 280px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.85), transparent);
+      animation: slowBeamGlide 10s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .light-beam-v-left {
+      position: absolute;
+      top: 0;
+      left: 3.5rem;
+      width: 1px;
+      height: 200px;
+      background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+      animation: slowVerticalBeam 12s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .light-beam-v-right {
+      position: absolute;
+      top: 0;
+      right: 3.5rem;
+      width: 1px;
+      height: 200px;
+      background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+      animation: slowVerticalBeam 14s cubic-bezier(0.4, 0, 0.6, 1) infinite 5s;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* Ambient Corner Orbs */
+    .ambient-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      animation: ambientBreath 9s ease-in-out infinite;
+    }
+
+    /* Full-screen boundless cyber aesthetics */
+    body {
+      background-color: #000000;
+      color: #F8FAFC;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+      overflow-x: hidden;
+    }
+
+    .bg-noise {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
+    }
+
+    /* 3D Flip Card Architecture */
+    .flip-card-wrapper {
+      perspective: 1200px;
+    }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      transition: transform 0.68s cubic-bezier(0.23, 1, 0.32, 1);
+      transform-style: preserve-3d;
+    }
+    .flip-card-inner.is-flipped {
+      transform: rotateY(180deg);
+    }
+    .flip-card-face {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 1.5rem;
+      overflow: hidden;
+    }
+    .flip-card-back {
+      transform: rotateY(180deg);
+      background: rgba(14, 14, 14, 0.95);
+    }
+
+    /* Subtle Elegant White Neon Outline (Göz almayan şık beyaz neon) */
+    .neon-white-border {
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.14), inset 0 0 20px rgba(255, 255, 255, 0.03);
+    }
+
+    /* Interactive 3D Tilt Card (Used on Services & Team, NOT on Contact Form) */
+    .clean-card {
+      background: rgba(12, 12, 12, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transition: transform 0.22s cubic-bezier(0.2, 0, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+      will-change: transform;
+    }
+    .clean-card:hover {
+      border-color: rgba(255, 255, 255, 0.38);
+      box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.85), 0 0 25px rgba(255, 255, 255, 0.05);
+    }
+
+    /* Interactive Mouse Spotlight for Cards */
+    .card-spotlight {
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      background: radial-gradient(450px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.09), transparent 70%);
+    }
+    .clean-card:hover .card-spotlight {
+      opacity: 1;
+    }
+
+    /* Ambient Cursor Glow */
+    #cursorGlow {
+      pointer-events: none;
+      position: fixed;
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.035) 0%, rgba(255, 255, 255, 0.01) 35%, transparent 70%);
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      mix-blend-mode: screen;
+      transition: opacity 0.4s ease;
+    }
+
+    /* Scroll reveal styling */
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-on-scroll.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Modern Web Guidance: Native dialog containment */
+    dialog:modal {
+      overscroll-behavior: contain;
+    }
+    dialog::backdrop {
+      overflow: hidden;
+      overscroll-behavior: contain;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(10px);
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #000000;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1F1F1F;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #383838;
+    }
+
+    /* Luxury Card Improvements */
+    .luxury-card {
+      background: linear-gradient(180deg, rgba(16, 16, 16, 0.92) 0%, rgba(10, 10, 10, 0.96) 100%);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.15), 0 10px 30px -10px rgba(0, 0, 0, 0.8);
+      transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .luxury-card:hover {
+      border-color: rgba(255, 255, 255, 0.38);
+      box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.3), 0 20px 45px -12px rgba(0, 0, 0, 0.9), 0 0 25px rgba(255, 255, 255, 0.08);
+      transform: translateY(-3px);
+    }
+
+
+    /* ========================================================
+       M2N CLOVER LOGO PETALS & HORIZONTAL CARDS (100% MONOCHROME)
+       ======================================================== */
+    .m2n-clover-leaf {
+      transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+      cursor: pointer;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: #0E0E0E;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      user-select: none;
+      color: #FFFFFF;
+      padding: 1.25rem 1rem;
+    }
+    .m2n-clover-leaf .leaf-badge {
+      color: #888888;
+      transition: color 0.3s ease;
+    }
+    .m2n-clover-leaf .leaf-title {
+      color: #FFFFFF;
+      transition: color 0.3s ease;
+    }
+    .m2n-clover-leaf:hover {
+      border-color: rgba(255, 255, 255, 0.45);
+      background: #181818;
+      transform: scale(1.03);
+    }
+    .m2n-clover-leaf.active-leaf {
+      background: #FFFFFF !important;
+      color: #000000 !important;
+      border-color: #FFFFFF !important;
+      box-shadow: 0 0 35px rgba(255, 255, 255, 0.45);
+      transform: scale(1.06);
+      z-index: 10;
+    }
+    .m2n-clover-leaf.active-leaf .leaf-badge {
+      color: #000000 !important;
+      font-weight: 900 !important;
+    }
+    .m2n-clover-leaf.active-leaf .leaf-title {
+      color: #000000 !important;
+      font-weight: 800 !important;
+    }
+    .m2n-clover-leaf.active-leaf * {
+      color: #000000 !important;
+    }
+
+    /* Exact M2N Logo 4-Petal Shapes (1:1 with Official M2N Logo Emblem)
+       Alternating diagonal rounding: 58% on opposite lobes, 10-12% on corners, inner sharp point faces center */
+    .leaf-tl {
+      border-radius: 12% 58% 10% 58% !important;
+    }
+    .leaf-tr {
+      border-radius: 58% 12% 58% 10% !important;
+    }
+    .leaf-bl {
+      border-radius: 58% 10% 58% 12% !important;
+    }
+    .leaf-br {
+      border-radius: 10% 58% 12% 58% !important;
+    }
+
+    /* Elegant Full-Screen Section Architecture with Clean Borders & Smooth Scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+    .fullscreen-snap-section {
+      min-height: 100vh;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      background: #000000;
+      border-top: 1px solid rgba(255, 255, 255, 0.16);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+      padding-top: 7rem;
+      padding-bottom: 5rem;
+    }
+
+    /* Horizontal Cards Slider Track with Edge Vignette Mask and Safe Headroom */
+    .horizontal-cards-container {
+      position: relative;
+      width: 100%;
+      /* ONLY fade the trailing right edge; leftmost card is 100% bright, crisp and never in darkness */
+      mask-image: linear-gradient(to right, black calc(100% - 50px), transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, black calc(100% - 50px), transparent 100%);
+    }
+    @media (max-width: 640px) {
+      .horizontal-cards-container {
+        mask-image: linear-gradient(to right, black calc(100% - 30px), transparent 100%);
+        -webkit-mask-image: linear-gradient(to right, black calc(100% - 30px), transparent 100%);
+      }
+    }
+    .horizontal-cards-track {
+      display: flex;
+      gap: 1.5rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      padding-top: 1.75rem;    /* Generous headroom so translateY(-6px) never clips top border! */
+      padding-bottom: 2.25rem;
+      padding-left: 1.5rem;
+      padding-right: 2.5rem;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .horizontal-cards-track::-webkit-scrollbar {
+      display: none;
+    }
+    .horizontal-service-card {
+      scroll-snap-align: start;
+      flex-shrink: 0;
+      width: 320px;
+      min-width: 320px;
+      height: 335px;
+      background: #0C0C0C;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 1.5rem;
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+      position: relative;
+    }
+    @media (min-width: 640px) {
+      .horizontal-service-card {
+        width: 360px;
+        min-width: 360px;
+      }
+    }
+    .horizontal-service-card:hover {
+      border-color: rgba(255, 255, 255, 0.45);
+      transform: translateY(-6px);
+      box-shadow: 0 24px 48px -15px rgba(0, 0, 0, 0.95), 0 0 30px rgba(255, 255, 255, 0.08);
+    }
+  </style>
+</head>
+<body class="selection:bg-white selection:text-black">
+
+  <!-- Interactive Smooth Mouse Glow -->
+  <div id="cursorGlow"></div>
+  <div class="fixed inset-0 pointer-events-none z-0 bg-noise"></div>
+
+  <!-- ==================== FIXED FLOATING NAVBAR (HEP BİZİMLE GELEN BAR) ==================== -->
+  <header class="fixed top-5 left-0 right-0 z-50 px-5 sm:px-10 flex items-center justify-between max-w-7xl mx-auto pointer-events-auto transition-all duration-300">
+    
+    <!-- Brand Logo (Pill container on left) -->
+    <a href="#" onclick="event.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' })" class="flex items-center gap-2.5 group bg-black/70 backdrop-blur-2xl px-4 py-2.5 rounded-full border border-white/15 hover:border-white/35 transition-all shadow-xl cursor-pointer" aria-label="M2N Tech Ana Sayfa">
+      <img src="logo.png" alt="M2N Logo" class="h-6 sm:h-7 w-auto object-contain filter drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] group-hover:scale-105 transition-all">
+    </a>
+
+    <!-- Floating White Pill Navbar (Matches screenshot exactly, always sticks to viewport) -->
+    <div class="flex items-center bg-white rounded-full p-1.5 shadow-2xl shadow-black/90 text-black border border-white/20 transition-all hover:scale-[1.02]">
+      <nav class="flex items-center gap-5 sm:gap-8 px-4 sm:px-6 text-xs font-bold uppercase tracking-wider font-display">
+        <a href="#services" onclick="event.preventDefault(); scrollToSection('#services')" class="hover:opacity-60 transition-opacity">Hizmetler</a>
+        <a href="#value" onclick="event.preventDefault(); scrollToSection('#value')" class="hover:opacity-60 transition-opacity">Ne Sağlıyoruz</a>
+        <a href="#about" onclick="event.preventDefault(); scrollToSection('#about')" class="hover:opacity-60 transition-opacity">Hakkımızda</a>
+      </nav>
+      <!-- Black Pill CTA inside -->
+      <a href="#contact" onclick="event.preventDefault(); scrollToSection('#contact')" class="bg-black text-white px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-neutral-800 transition-all flex items-center gap-1.5 shadow-md active:scale-95">
+        <span>PROJEYİ BAŞLAT</span>
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+  </header>
+
+
+  <!-- ========================================================
+       FULL-BLEED CINEMATIC HERO (PURE MONOCHROME 3D WAVE)
+       ======================================================== -->
+  <section id="heroSection" class="relative w-full min-h-screen flex flex-col justify-between overflow-hidden bg-black pt-28 sm:pt-32">
+    
+    <!-- Ultra Smooth Boundless Black & White Wave Canvas -->
+    <canvas id="waveCanvas" class="absolute inset-0 w-full h-full z-0 cursor-pointer"></canvas>
+
+    <!-- Deep Contrast Dark Shields: Prevents text-dot collision & provides pristine legibility -->
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.88)_0%,rgba(0,0,0,0.5)_50%,transparent_100%)] pointer-events-none z-[1]"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-[#000000] pointer-events-none z-[1]"></div>
+
+    <!-- Top Soft White Ambient Glow -->
+    <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-white/5 rounded-full blur-[140px] pointer-events-none z-[1]"></div>
+
+    
+
+
+    <!-- ==================== HERO CENTER CONTENT (MONOCHROME & CRISP) ==================== -->
+    <div class="relative z-20 my-auto px-6 sm:px-12 py-8 text-center max-w-4xl mx-auto space-y-6 pointer-events-none">
+      
+      <!-- Subtle Floating Badge (Pure Black & White) -->
+      <div class="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-black/85 backdrop-blur-xl border border-white/20 text-xs tracking-widest uppercase font-semibold text-neutral-300 pointer-events-auto shadow-2xl">
+        <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
+        <span class="text-white font-bold">ESNAFTAN HOLDİNG'E</span>
+        <span class="text-neutral-500">•</span>
+        <span>UÇTAN UCA DİJİTAL DÖNÜŞÜM</span>
+      </div>
+
+      <!-- Headline with Dark Backlight Glow for 100% Crisp Legibility -->
+      <div class="relative py-2">
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extralight tracking-tight text-white leading-[1.15] uppercase font-display select-none filter drop-shadow-[0_4px_30px_rgba(0,0,0,0.98)]">
+          Fikirden Mağazaya,<br>
+          <span class="font-bold text-white tracking-normal">Kâğıttan Dijitale:</span><br>
+          <span class="text-xl sm:text-3xl font-light text-neutral-200">İşinizi Geleceğe Taşıyan Yazılım Çözümleri.</span>
+        </h1>
+      </div>
+
+      <!-- Subheadline -->
+      <p class="text-neutral-300 text-sm sm:text-base max-w-2xl mx-auto font-normal leading-relaxed select-none filter drop-shadow-[0_2px_16px_rgba(0,0,0,0.95)]">
+        Mobil uygulamalardan şirket içi yönetim panellerine, süreç otomasyonundan özel yazılımlara kadar <span class="text-white font-semibold">işinizi büyüten ve hızlandıran uçtan uca teknoloji ortağınız.</span>
+      </p>
+
+      <!-- Center Logo Highlight -->
+      <div class="pt-2 flex flex-col items-center justify-center pointer-events-auto">
+        <img src="logo.png" alt="M2N Tech" class="h-9 sm:h-11 w-auto object-contain opacity-95 hover:opacity-100 transition-opacity filter drop-shadow-[0_0_20px_rgba(255,255,255,0.35)]">
+      </div>
+
+      <!-- 3 Simple Pillars (Pure Black & White) -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 max-w-3xl mx-auto pointer-events-auto text-left">
+        <div class="p-3.5 rounded-2xl bg-black/80 border border-white/15 backdrop-blur-md">
+          <div class="text-white font-bold text-xs flex items-center gap-1.5 mb-1">
+            <svg class="w-3.5 h-3.5 text-white inline-block shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg> <span>Kâğıt & Excel'e Son</span>
+          </div>
+          <div class="text-[11px] text-neutral-400 font-light leading-snug">
+            Siparişleriniz, kasanız ve personeliniz tek ekranda ve cebinizde.
+          </div>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-black/80 border border-white/15 backdrop-blur-md">
+          <div class="text-white font-bold text-xs flex items-center gap-1.5 mb-1">
+            <svg class="w-3.5 h-3.5 text-white inline-block shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg> <span>Esnaftan Holding'e</span>
+          </div>
+          <div class="text-[11px] text-neutral-400 font-light leading-snug">
+            İster tek bir dükkân, ister 100 şubeli zincir; altyapımız hazır.
+          </div>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-black/80 border border-white/15 backdrop-blur-md">
+          <div class="text-white font-bold text-xs flex items-center gap-1.5 mb-1">
+            <svg class="w-3.5 h-3.5 text-white inline-block shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg> <span>Kurup Bırakmıyoruz</span>
+          </div>
+          <div class="text-[11px] text-neutral-400 font-light leading-snug">
+            Teknik destek, bakım ve sürekli geliştirme ile her gün yanınızdayız.
+          </div>
+        </div>
+      </div>
+
+          </div>
+
+  </section>
+
+
+  <!-- ==================== 01. HİZMETLER (İKİ ÇİZGİ ARASINDA, SAF SİYAH & BEYAZ) ==================== -->
+  <!-- ==================== 01. HİZMETLER (İKİ ÇİZGİ ARASINDA, YATAY KARTLAR SLIDER) ==================== -->
+  <section id="services" class="fullscreen-snap-section overflow-hidden">
+    <!-- Traveling Border Light Beam -->
+    <div class="light-beam-h"></div>
+    
+    <!-- Architectural Subtle Grid Background -->
+    <div class="absolute inset-0 bg-tech-grid pointer-events-none z-0"></div>
+    
+    <!-- Ambient Corner Glowing Orbs -->
+    <div class="ambient-orb -top-24 -left-24 w-80 h-80 bg-white/[0.025] z-0"></div>
+    <div class="ambient-orb -bottom-24 -right-24 w-96 h-96 bg-white/[0.025] z-0"></div>
+
+    <!-- Side Technical Crosshair Markers (Linear / Vercel Aesthetic) -->
+    <div class="hidden lg:flex flex-col justify-between absolute top-16 bottom-16 left-6 pointer-events-none z-[2] text-[10px] font-mono text-neutral-600 select-none">
+      <div>+ [01 // SRV.MOD]</div>
+      <div class="w-px h-24 bg-white/10 mx-auto my-auto"></div>
+      <div>+ [SYS.ONLINE]</div>
+    </div>
+    <div class="hidden lg:flex flex-col justify-between absolute top-16 bottom-16 right-6 pointer-events-none z-[2] text-[10px] font-mono text-neutral-600 select-none text-right">
+      <div>[LAT.41.0] +</div>
+      <div class="w-px h-24 bg-white/10 mx-auto my-auto"></div>
+      <div>[LON.28.9] +</div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 sm:px-12 w-full relative z-10">
+      
+      <!-- Section Header with Horizontal Slider Navigation Controls -->
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 reveal-on-scroll">
+        <div>
+          <div class="text-[11px] uppercase tracking-wider text-neutral-400 mb-1 flex items-center gap-2 font-sans font-medium">
+            <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+            01 // HİZMETLER
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-extralight uppercase font-display text-white">
+            İşletmenize Özel <span class="font-bold text-white">Net ve Güçlü Çözümler</span>
+          </h2>
+          <p class="text-neutral-400 text-xs sm:text-sm mt-1.5 font-light leading-relaxed">
+            Kalıp paketlere mahkum değilsiniz. Hizmetlerimizi yatay kartlar halinde kaydırarak inceleyebilirsiniz.
+          </p>
+        </div>
+
+        <!-- Slider Arrows -->
+        <div class="flex items-center gap-3 mt-4 sm:mt-0">
+          <button type="button" onclick="scrollServiceCards(-1)" aria-label="Geri" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-white flex items-center justify-center transition-all hover:scale-105 active:scale-95">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <button type="button" onclick="scrollServiceCards(1)" aria-label="İleri" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-white flex items-center justify-center transition-all hover:scale-105 active:scale-95">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Horizontal Cards Slider Track (Yatay Kartlar) -->
+      <div class="horizontal-cards-container">
+        <div id="servicesTrack" class="horizontal-cards-track">
+
+        <!-- Card 1: Mobil Uygulama -->
+        <div class="horizontal-service-card flip-card-wrapper">
+          <div class="flip-card-inner">
+            <div class="flip-card-face p-6 flex flex-col justify-between rounded-3xl bg-[#0D0D0D] border border-white/12">
+              <div>
+                <div class="flex items-center justify-between text-xs mb-4 font-sans">
+                  <div class="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="3" stroke-width="1.75"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5" stroke-linecap="round"/></svg>
+                  </div>
+                  <span class="px-3 py-1 rounded-full bg-white/10 border border-white/20 text-neutral-200 text-xs font-medium">01 // Mobil</span>
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-white mb-2 leading-snug">Mobil Uygulama Geliştirme</h3>
+                <p class="text-xs text-neutral-300 leading-relaxed font-light">
+                  iOS ve Android cihazlarda yüksek hızda çalışan, saha ekibinizi, sipariş ve randevu süreçlerinizi cepten yöneten uygulamalar.
+                </p>
+              </div>
+              <button type="button" onclick="toggleFlip(this)" class="w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/15 border border-white/15 text-xs font-medium text-white flex items-center justify-between transition-all group">
+                <span>İşletme Faydası Ne?</span>
+                <span class="text-neutral-400 group-hover:text-white transition-colors flex items-center gap-1">Tıkla Gör ↻</span>
+              </button>
+            </div>
+            <div class="flip-card-face flip-card-back p-6 flex flex-col justify-between rounded-3xl border border-white/25 bg-[#141414]">
+              <div>
+                <div class="text-[11px] tracking-wider text-neutral-400 uppercase font-bold mb-2 font-sans flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-white"></span> İŞLETMEYE SOMUT KAZANIMI
+                </div>
+                <p class="text-xs text-neutral-200 font-light leading-snug mb-3">
+                  Müşterileriniz 7/24 cepten sipariş versin; sahadaki personeliniz işini anında onaylasın. Telefon karmaşası biter.
+                </p>
+                <div class="space-y-2 pt-2 border-t border-white/10 text-xs text-neutral-300">
+                  <div class="flex items-center gap-2"><span>✓</span> Canlı GPS konum takibi & puantaj</div>
+                  <div class="flex items-center gap-2"><span>✓</span> App Store & Google Play yayını</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 pt-3 border-t border-white/10">
+                <button type="button" onclick="toggleFlip(this)" class="flex-1 py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-medium text-white">↺ Çevir</button>
+                <button type="button" onclick="selectServiceAndScroll('Mobil Uygulama Geliştirme')" class="flex-1 py-2 px-3 rounded-xl bg-white text-black text-xs font-bold">Teklif Al ↗</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Kuruma Özel Yönetim Panelleri -->
+        <div class="horizontal-service-card flip-card-wrapper">
+          <div class="flip-card-inner">
+            <div class="flip-card-face p-6 flex flex-col justify-between rounded-3xl bg-[#0D0D0D] border border-white/12">
+              <div>
+                <div class="flex items-center justify-between text-xs mb-4 font-sans">
+                  <div class="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5" stroke-width="1.75"/><rect x="14" y="3" width="7" height="5" rx="1.5" stroke-width="1.75"/><rect x="14" y="12" width="7" height="9" rx="1.5" stroke-width="1.75"/><rect x="3" y="16" width="7" height="5" rx="1.5" stroke-width="1.75"/></svg>
+                  </div>
+                  <span class="px-3 py-1 rounded-full bg-white/10 border border-white/20 text-neutral-200 text-xs font-medium">02 // ERP</span>
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-white mb-2 leading-snug">Kuruma Özel Yönetim Panelleri</h3>
+                <p class="text-xs text-neutral-300 leading-relaxed font-light">
+                  İşletmenizin departmanlarını, kasasını, stoklarını ve personelini tek bir güvenli ekrandan yönetebileceğiniz paneller.
+                </p>
+              </div>
+              <button type="button" onclick="toggleFlip(this)" class="w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/15 border border-white/15 text-xs font-medium text-white flex items-center justify-between transition-all group">
+                <span>İşletme Faydası Ne?</span>
+                <span class="text-neutral-400 group-hover:text-white transition-colors flex items-center gap-1">Tıkla Gör ↻</span>
+              </button>
+            </div>
+            <div class="flip-card-face flip-card-back p-6 flex flex-col justify-between rounded-3xl border border-white/25 bg-[#141414]">
+              <div>
+                <div class="text-[11px] tracking-wider text-neutral-400 uppercase font-bold mb-2 font-sans flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-white"></span> İŞLETMEYE SOMUT KAZANIMI
+                </div>
+                <p class="text-xs text-neutral-200 font-light leading-snug mb-3">
+                  Dağınık Excel tabloları biter. Kasada ne var, kim hangi işi teslim etti tek ekranda anlık izlenir.
+                </p>
+                <div class="space-y-2 pt-2 border-t border-white/10 text-xs text-neutral-300">
+                  <div class="flex items-center gap-2"><span>✓</span> Şube ve depoların anlık kasa/stok takibi</div>
+                  <div class="flex items-center gap-2"><span>✓</span> Tek tıkla otomatik ciro ve kâr raporu</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 pt-3 border-t border-white/10">
+                <button type="button" onclick="toggleFlip(this)" class="flex-1 py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-medium text-white">↺ Çevir</button>
+                <button type="button" onclick="selectServiceAndScroll('Kuruma Özel Yönetim Panelleri')" class="flex-1 py-2 px-3 rounded-xl bg-white text-black text-xs font-bold">Teklif Al ↗</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Kurumsal Web Siteleri -->
+        <div class="horizontal-service-card flip-card-wrapper">
+          <div class="flip-card-inner">
+            <div class="flip-card-face p-6 flex flex-col justify-between rounded-3xl bg-[#0D0D0D] border border-white/12">
+              <div>
+                <div class="flex items-center justify-between text-xs mb-4 font-sans">
+                  <div class="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="1.75"/><ellipse cx="12" cy="12" rx="4.5" ry="9" stroke-width="1.75"/><line x1="3" y1="12" x2="21" y2="12" stroke-width="1.75"/></svg>
+                  </div>
+                  <span class="px-3 py-1 rounded-full bg-white/10 border border-white/20 text-neutral-200 text-xs font-medium">03 // Vitrin</span>
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-white mb-2 leading-snug">Kurumsal Web Siteleri</h3>
+                <p class="text-xs text-neutral-300 leading-relaxed font-light">
+                  Marka prestijinizi yansıtan, telefon ve bilgisayarlarda ışık hızında açılan, aramalarda öne çıkaran modern siteler.
+                </p>
+              </div>
+              <button type="button" onclick="toggleFlip(this)" class="w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/15 border border-white/15 text-xs font-medium text-white flex items-center justify-between transition-all group">
+                <span>İşletme Faydası Ne?</span>
+                <span class="text-neutral-400 group-hover:text-white transition-colors flex items-center gap-1">Tıkla Gör ↻</span>
+              </button>
+            </div>
+            <div class="flip-card-face flip-card-back p-6 flex flex-col justify-between rounded-3xl border border-white/25 bg-[#141414]">
+              <div>
+                <div class="text-[11px] tracking-wider text-neutral-400 uppercase font-bold mb-2 font-sans flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-white"></span> İŞLETMEYE SOMUT KAZANIMI
+                </div>
+                <p class="text-xs text-neutral-200 font-light leading-snug mb-3">
+                  Google'da sizi arayanlar güven veren bir vitrinle karşılaşır, doğrudan WhatsApp veya telefon ile teklif ister.
+                </p>
+                <div class="space-y-2 pt-2 border-t border-white/10 text-xs text-neutral-300">
+                  <div class="flex items-center gap-2"><span>✓</span> Google SEO ile üst sıralarda yer alma</div>
+                  <div class="flex items-center gap-2"><span>✓</span> Doğrudan panele düşen anlık teklif formları</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 pt-3 border-t border-white/10">
+                <button type="button" onclick="toggleFlip(this)" class="flex-1 py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-medium text-white">↺ Çevir</button>
+                <button type="button" onclick="selectServiceAndScroll('Kurumsal Web Siteleri')" class="flex-1 py-2 px-3 rounded-xl bg-white text-black text-xs font-bold">Teklif Al ↗</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Dijital Başvuru ve Form -->
+        <div class="horizontal-service-card flip-card-wrapper">
+          <div class="flip-card-inner">
+            <div class="flip-card-face p-6 flex flex-col justify-between rounded-3xl bg-[#0D0D0D] border border-white/12">
+              <div>
+                <div class="flex items-center justify-between text-xs mb-4 font-sans">
+                  <div class="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                  </div>
+                  <span class="px-3 py-1 rounded-full bg-white/10 border border-white/20 text-neutral-200 text-xs font-medium">04 // Form</span>
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-white mb-2 leading-snug">Dijital Başvuru & Form</h3>
+                <p class="text-xs text-neutral-300 leading-relaxed font-light">
+                  Kâğıt formları ortadan kaldıran; belge yükleme, kimlik doğrulama ve onay adımlarını dijitalleştiren güvenli sistemler.
+                </p>
+              </div>
+              <button type="button" onclick="toggleFlip(this)" class="w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/15 border border-white/15 text-xs font-medium text-white flex items-center justify-between transition-all group">
+                <span>İşletme Faydası Ne?</span>
+                <span class="text-neutral-400 group-hover:text-white transition-colors flex items-center gap-1">Tıkla Gör ↻</span>
+              </button>
+            </div>
+            <div class="flip-card-face flip-card-back p-6 flex flex-col justify-between rounded-3xl border border-white/25 bg-[#141414]">
+              <div>
+                <div class="text-[11px] tracking-wider text-neutral-400 uppercase font-bold mb-2 font-sans flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-white"></span> İŞLETMEYE SOMUT KAZANIMI
+                </div>
+                <p class="text-xs text-neutral-200 font-light leading-snug mb-3">
+                  Fotokopi ve imza kuyruğu biter. Evraklar kameradan çekilip eksiksiz dijital onaya düşer.
+                </p>
+                <div class="space-y-2 pt-2 border-t border-white/10 text-xs text-neutral-300">
+                  <div class="flex items-center gap-2"><span>✓</span> TCKN ve resmi belge doğrulama</div>
+                  <div class="flex items-center gap-2"><span>✓</span> KVKK uyumlu güvenli dijital arşiv</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 pt-3 border-t border-white/10">
+                <button type="button" onclick="toggleFlip(this)" class="flex-1 py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-medium text-white">↺ Çevir</button>
+                <button type="button" onclick="selectServiceAndScroll('Dijital Başvuru ve Form Sistemleri')" class="flex-1 py-2 px-3 rounded-xl bg-white text-black text-xs font-bold">Teklif Al ↗</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5: Entegrasyon ve Otomasyon -->
+        <div class="horizontal-service-card flip-card-wrapper">
+          <div class="flip-card-inner">
+            <div class="flip-card-face p-6 flex flex-col justify-between rounded-3xl bg-[#0D0D0D] border border-white/12">
+              <div>
+                <div class="flex items-center justify-between text-xs mb-4 font-sans">
+                  <div class="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                  </div>
+                  <span class="px-3 py-1 rounded-full bg-white/10 border border-white/20 text-neutral-200 text-xs font-medium">05 // Otomasyon</span>
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-white mb-2 leading-snug">Entegrasyon ve Otomasyon</h3>
+                <p class="text-xs text-neutral-300 leading-relaxed font-light">
+                  Muhasebe, banka, e-fatura ve kargo programlarınızı konuşturan, saatlik işleri saniyelere indiren otomasyonlar.
+                </p>
+              </div>
+              <button type="button" onclick="toggleFlip(this)" class="w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/15 border border-white/15 text-xs font-medium text-white flex items-center justify-between transition-all group">
+                <span>İşletme Faydası Ne?</span>
+                <span class="text-neutral-400 group-hover:text-white transition-colors flex items-center gap-1">Tıkla Gör ↻</span>
+              </button>
+            </div>
+            <div class="flip-card-face flip-card-back p-6 flex flex-col justify-between rounded-3xl border border-white/25 bg-[#141414]">
+              <div>
+                <div class="text-[11px] tracking-wider text-neutral-400 uppercase font-bold mb-2 font-sans flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-white"></span> İŞLETMEYE SOMUT KAZANIMI
+                </div>
+                <p class="text-xs text-neutral-200 font-light leading-snug mb-3">
+                  Personelinizin saatlerce fatura kesme veya kargo kodu girme işini otomatik sistem 1 saniyede çözer.
+                </p>
+                <div class="space-y-2 pt-2 border-t border-white/10 text-xs text-neutral-300">
+                  <div class="flex items-center gap-2"><span>✓</span> E-fatura, SMS ve kargo otomatik entegrasyonu</div>
+                  <div class="flex items-center gap-2"><span>✓</span> Rutin operasyonlarda %80 iş gücü tasarrufu</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 pt-3 border-t border-white/10">
+                <button type="button" onclick="toggleFlip(this)" class="flex-1 py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-medium text-white">↺ Çevir</button>
+                <button type="button" onclick="selectServiceAndScroll('Entegrasyon ve Otomasyon')" class="flex-1 py-2 px-3 rounded-xl bg-white text-black text-xs font-bold">Teklif Al ↗</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6: Masaüstü Uygulamalar -->
+        <div class="horizontal-service-card flip-card-wrapper">
+          <div class="flip-card-inner">
+            <div class="flip-card-face p-6 flex flex-col justify-between rounded-3xl bg-[#0D0D0D] border border-white/12">
+              <div>
+                <div class="flex items-center justify-between text-xs mb-4 font-sans">
+                  <div class="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" stroke-width="1.75"/><line x1="8" y1="21" x2="16" y2="21" stroke-width="1.75" stroke-linecap="round"/><line x1="12" y1="17" x2="12" y2="21" stroke-width="1.75"/></svg>
+                  </div>
+                  <span class="px-3 py-1 rounded-full bg-white/10 border border-white/20 text-neutral-200 text-xs font-medium">06 // Donanım</span>
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-white mb-2 leading-snug">Masaüstü Uygulamalar</h3>
+                <p class="text-xs text-neutral-300 leading-relaxed font-light">
+                  Windows ve macOS üzerinde çalışan; barkod okuyucu, terazi ve yerel yazıcı gibi donanımlarla haberleşen programlar.
+                </p>
+              </div>
+              <button type="button" onclick="toggleFlip(this)" class="w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/15 border border-white/15 text-xs font-medium text-white flex items-center justify-between transition-all group">
+                <span>İşletme Faydası Ne?</span>
+                <span class="text-neutral-400 group-hover:text-white transition-colors flex items-center gap-1">Tıkla Gör ↻</span>
+              </button>
+            </div>
+            <div class="flip-card-face flip-card-back p-6 flex flex-col justify-between rounded-3xl border border-white/25 bg-[#141414]">
+              <div>
+                <div class="text-[11px] tracking-wider text-neutral-400 uppercase font-bold mb-2 font-sans flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-white"></span> İŞLETMEYE SOMUT KAZANIMI
+                </div>
+                <p class="text-xs text-neutral-200 font-light leading-snug mb-3">
+                  İnternet kopsa dahi kasanız ve depo donanımlarınız kesintisiz çalışmaya devam eder; donanım hızında çalışır.
+                </p>
+                <div class="space-y-2 pt-2 border-t border-white/10 text-xs text-neutral-300">
+                  <div class="flex items-center gap-2"><span>✓</span> İnternetsiz çevrimdışı çalışabilen veri tabanı</div>
+                  <div class="flex items-center gap-2"><span>✓</span> Barkod, terazi ve fiş yazıcı tam uyumu</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 pt-3 border-t border-white/10">
+                <button type="button" onclick="toggleFlip(this)" class="flex-1 py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-medium text-white">↺ Çevir</button>
+                <button type="button" onclick="selectServiceAndScroll('Masaüstü Uygulamalar')" class="flex-1 py-2 px-3 rounded-xl bg-white text-black text-xs font-bold">Teklif Al ↗</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 7: Süreç Analizi ve Danışmanlık -->
+        <div class="horizontal-service-card flip-card-wrapper">
+          <div class="flip-card-inner">
+            <div class="flip-card-face p-6 flex flex-col justify-between rounded-3xl bg-[#0D0D0D] border border-white/12">
+              <div>
+                <div class="flex items-center justify-between text-xs mb-4 font-sans">
+                  <div class="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="1.75"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 7v5l3 3"/></svg>
+                  </div>
+                  <span class="px-3 py-1 rounded-full bg-white/10 border border-white/20 text-neutral-200 text-xs font-medium">07 // Strateji</span>
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-white mb-2 leading-snug">Süreç Analizi & Danışmanlık</h3>
+                <p class="text-xs text-neutral-300 leading-relaxed font-light">
+                  Yazılıma para harcamadan önce işletmenizin röntgenini çekiyor, gerçekten neye ihtiyacınız olduğunu belirleyip bütçeyi koruyoruz.
+                </p>
+              </div>
+              <button type="button" onclick="toggleFlip(this)" class="w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/15 border border-white/15 text-xs font-medium text-white flex items-center justify-between transition-all group">
+                <span>İşletme Faydası Ne?</span>
+                <span class="text-neutral-400 group-hover:text-white transition-colors flex items-center gap-1">Tıkla Gör ↻</span>
+              </button>
+            </div>
+            <div class="flip-card-face flip-card-back p-6 flex flex-col justify-between rounded-3xl border border-white/25 bg-[#141414]">
+              <div>
+                <div class="text-[11px] tracking-wider text-neutral-400 uppercase font-bold mb-2 font-sans flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-white"></span> İŞLETMEYE SOMUT KAZANIMI
+                </div>
+                <p class="text-xs text-neutral-200 font-light leading-snug mb-3">
+                  İşinize yaramayacak pahalı hazır paketlere bütçe kaptırmazsınız; yatırımınız ilk günden net kâr olarak döner.
+                </p>
+                <div class="space-y-2 pt-2 border-t border-white/10 text-xs text-neutral-300">
+                  <div class="flex items-center gap-2"><span>✓</span> Gereksiz masrafların ve tıkanıklıkların tespiti</div>
+                  <div class="flex items-center gap-2"><span>✓</span> Adım adım dijitalleşme ve net bütçe planı</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 pt-3 border-t border-white/10">
+                <button type="button" onclick="toggleFlip(this)" class="flex-1 py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-medium text-white">↺ Çevir</button>
+                <button type="button" onclick="selectServiceAndScroll('Süreç Analizi ve Danışmanlık')" class="flex-1 py-2 px-3 rounded-xl bg-white text-black text-xs font-bold">Teklif Al ↗</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ==================== 02. NE SAĞLIYORUZ? (M2N 4 YAPRAK LOGO KÜMESİ, İKİ ÇİZGİ ARASINDA) ==================== -->
+  <section id="value" class="fullscreen-snap-section overflow-hidden">
+    <!-- Traveling Border Light Beam -->
+    <div class="light-beam-h" style="animation-delay: 2.5s;"></div>
+
+    <!-- Architectural Subtle Dotted Matrix -->
+    <div class="absolute inset-0 bg-tech-dots pointer-events-none z-0"></div>
+
+    <!-- Subtle Ambient Energy Rings behind Clover (Futuristic Radar Resonance) -->
+    <div class="absolute top-1/2 left-[25%] -translate-x-1/2 -translate-y-1/2 w-80 h-80 sm:w-96 sm:h-96 rounded-full border border-white/[0.05] pointer-events-none z-0 animate-[pulseRingSlow_10s_ease-in-out_infinite]"></div>
+    <div class="absolute top-1/2 left-[25%] -translate-x-1/2 -translate-y-1/2 w-[440px] h-[440px] rounded-full border border-white/[0.025] pointer-events-none z-0 animate-[pulseRingSlow_14s_ease-in-out_infinite_3s]"></div>
+
+    <!-- Ambient Corner Glowing Orbs -->
+    <div class="ambient-orb top-10 right-10 w-80 h-80 bg-white/[0.025] z-0"></div>
+
+    <!-- Side Technical Crosshair Markers -->
+    <div class="hidden lg:flex flex-col justify-between absolute top-16 bottom-16 left-6 pointer-events-none z-[2] text-[10px] font-mono text-neutral-600 select-none">
+      <div>+ [02 // MAT.VAL]</div>
+      <div class="w-px h-24 bg-white/10 mx-auto my-auto"></div>
+      <div>+ [4.LEAF.HUB]</div>
+    </div>
+    <div class="hidden lg:flex flex-col justify-between absolute top-16 bottom-16 right-6 pointer-events-none z-[2] text-[10px] font-mono text-neutral-600 select-none text-right">
+      <div>[SCALE.AUTO] +</div>
+      <div class="w-px h-24 bg-white/10 mx-auto my-auto"></div>
+      <div>[ROI.DRIVEN] +</div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 sm:px-12 w-full relative z-10">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 reveal-on-scroll">
+        <div>
+          <div class="text-[11px] uppercase tracking-wider text-neutral-400 mb-1 flex items-center gap-2 font-sans font-medium">
+            <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+            02 // NE SAĞLIYORUZ?
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-extralight uppercase font-display text-white">
+            Hangi Ölçekte Olursanız Olun, <span class="font-bold text-white">Net Sonuç</span>
+          </h2>
+        </div>
+
+      </div>
+
+      <!-- Dual Stage: Left has M2N Logotype + 4-Petal Clover, Right has Fixed Rock-Solid Solution Card -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center max-w-6xl mx-auto">
+
+        <!-- Left: Crisp M2N Logotype + 4-Petal Clover Cluster Side by Side -->
+        <div class="lg:col-span-5 flex items-center justify-center gap-5 sm:gap-7">
+          
+          <!-- Official M2N Typography Logotype standing high-res beside petals -->
+          <div class="flex items-center justify-center shrink-0">
+            <img src="m2n-vertical.png" alt="M2N" class="h-56 sm:h-64 w-auto object-contain filter drop-shadow-[0_0_25px_rgba(255,255,255,0.45)] select-none">
+          </div>
+
+          <!-- 4-Petal Clover Cluster (Interactive Hub) -->
+          <div class="grid grid-cols-2 gap-2.5 w-60 h-60 sm:w-68 sm:h-68 shrink-0">
+
+            <!-- Leaf 1: Top-Left (Esnaf) -->
+            <div id="leaf-1" onclick="selectCloverLeaf(1)" class="m2n-clover-leaf leaf-tl">
+              <span class="leaf-badge text-xs font-mono font-bold mb-1">01</span>
+              <span class="leaf-title text-xs sm:text-sm font-bold leading-tight">Esnaf & Butik</span>
+            </div>
+
+            <!-- Leaf 2: Top-Right (KOBİ - Popüler Tercih Active by Default) -->
+            <div id="leaf-2" onclick="selectCloverLeaf(2)" class="m2n-clover-leaf leaf-tr active-leaf">
+              <span class="leaf-badge text-[10px] sm:text-xs font-extrabold uppercase tracking-wider mb-1">★ POPÜLER</span>
+              <span class="leaf-title text-xs sm:text-sm font-bold leading-tight">Büyüyen KOBİ</span>
+            </div>
+
+            <!-- Leaf 3: Bottom-Left (Zincir) -->
+            <div id="leaf-3" onclick="selectCloverLeaf(3)" class="m2n-clover-leaf leaf-bl">
+              <span class="leaf-badge text-xs font-mono font-bold mb-1">03</span>
+              <span class="leaf-title text-xs sm:text-sm font-bold leading-tight">Zincir Mağaza</span>
+            </div>
+
+            <!-- Leaf 4: Bottom-Right (Holding) -->
+            <div id="leaf-4" onclick="selectCloverLeaf(4)" class="m2n-clover-leaf leaf-br">
+              <span class="leaf-badge text-xs font-mono font-bold mb-1">04</span>
+              <span class="leaf-title text-xs sm:text-sm font-bold leading-tight">Holding</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right: Rock-Solid Stable Detail Card (NO SHIFTING, FIXED HEIGHT) -->
+        <div class="lg:col-span-7">
+          <div id="cloverDetailCard" class="p-6 sm:p-8 rounded-3xl bg-[#0D0D0D] border border-white/20 h-[380px] min-h-[380px] flex flex-col justify-between shadow-2xl relative">
+            
+            <div id="cloverContentWrap" class="transition-opacity duration-150">
+              <div class="flex items-center justify-between pb-3 mb-2.5 border-b border-white/10">
+                <span id="cloverBadge" class="px-3 py-1 rounded-full bg-white text-black text-[11px] font-extrabold uppercase tracking-wider shadow-md">
+                  ★ POPÜLER TERCİH • BÜYÜYEN KOBİ
+                </span>
+                <span id="cloverLeafNum" class="text-xs font-mono text-neutral-400">ÖLÇEK // 02</span>
+              </div>
+
+              <!-- Fixed Height Title Container: Prevents ANY title shift between leaves -->
+              <div class="min-h-[54px] flex items-center mb-2">
+                <h3 id="cloverTitle" class="text-lg sm:text-xl font-bold text-white leading-snug">
+                  Saha Ekibi, Şubeler ve Kasa Tek Ekranda
+                </h3>
+              </div>
+
+              <!-- Fixed Height Description Container -->
+              <div class="min-h-[42px] flex items-center mb-3.5">
+                <p id="cloverDesc" class="text-xs sm:text-sm text-neutral-300 font-light leading-relaxed">
+                  Birden fazla personeli veya sahası olan firmalar için Excel karmaşasını bitiriyoruz. Kim nerede, kasa ve siparişler ne durumda anlık görün.
+                </p>
+              </div>
+
+              <div id="cloverBullets" class="space-y-2 text-xs text-neutral-200">
+                <div class="flex items-start gap-2.5">
+                  <svg class="w-4 h-4 text-white shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span>Saha personeli için canlı GPS konum takibi ve puantaj</span>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <svg class="w-4 h-4 text-white shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span>Çok şubeli ve çok personelli merkezi yönetim paneli</span>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <svg class="w-4 h-4 text-white shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span>E-fatura, SMS ve kargo sistemleriyle tam otomatik veri akışı</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Bottom Bar: Fixed and rock solid -->
+            <div class="pt-3.5 border-t border-white/10 flex items-center justify-between">
+              <div id="cloverRoiBox" class="text-xs text-neutral-300 font-light">
+                <strong class="text-white font-medium">Net Faydası:</strong> Şube ve saha operasyonunu tek ekrana bağlar; personel hatalarını sıfırlar.
+              </div>
+              <button id="cloverCtaBtn" type="button" onclick="selectServiceAndScroll('Kuruma Özel Yönetim Panelleri')" class="px-5 py-2.5 rounded-xl bg-white text-black hover:bg-neutral-200 text-xs font-bold transition-all shadow-md shrink-0 ml-4">
+                Şirket Paketini Başlat ↗
+              </button>
+            </div>
+
+          </div>
+        </div>          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ==================== 03. HAKKIMIZDA (MÜHENDİSLİK TABANLI YAPI & STATS STRIP) ==================== -->
+  <section id="about" class="fullscreen-snap-section overflow-hidden">
+    <!-- Traveling Border Light Beam -->
+    <div class="light-beam-h" style="animation-delay: 5s;"></div>
+    
+    <!-- Vertical Gliding Light Beams on Sides -->
+    <div class="light-beam-v-left hidden lg:block"></div>
+    <div class="light-beam-v-right hidden lg:block"></div>
+
+    <!-- Architectural Subtle Grid Background -->
+    <div class="absolute inset-0 bg-tech-grid pointer-events-none z-0"></div>
+
+    <!-- Ambient Corner Glowing Orbs -->
+    <div class="ambient-orb -bottom-20 -left-20 w-80 h-80 bg-white/[0.03] z-0"></div>
+    <div class="ambient-orb -top-20 -right-20 w-80 h-80 bg-white/[0.02] z-0"></div>
+
+    <!-- Side Technical Crosshair Markers -->
+    <div class="hidden lg:flex flex-col justify-between absolute top-16 bottom-16 left-6 pointer-events-none z-[2] text-[10px] font-mono text-neutral-600 select-none">
+      <div>+ [03 // ENG.CORE]</div>
+      <div class="w-px h-24 bg-white/10 mx-auto my-auto"></div>
+      <div>+ [M2N.LAB]</div>
+    </div>
+    <div class="hidden lg:flex flex-col justify-between absolute top-16 bottom-16 right-6 pointer-events-none z-[2] text-[10px] font-mono text-neutral-600 select-none text-right">
+      <div>[BUILD.2026] +</div>
+      <div class="w-px h-24 bg-white/10 mx-auto my-auto"></div>
+      <div>[ZERO.INTERMEDIARY] +</div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 sm:px-12 w-full my-auto relative z-10">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-5 sm:mb-6 reveal-on-scroll">
+        <div>
+          <div class="text-[11px] uppercase tracking-wider text-neutral-400 mb-1 flex items-center gap-2 font-sans font-medium">
+            <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+            03 // HAKKIMIZDA
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-extralight uppercase font-display text-white">
+            Mühendislik Odaklı <span class="font-bold text-white">Doğrudan Çözüm</span>
+          </h2>
+        </div>
+        <p class="text-neutral-400 text-xs sm:text-sm max-w-sm font-light mt-1.5 sm:mt-0 leading-relaxed">
+          Kalıp temalara ve aracı ajans komisyonlarına son veriyoruz.
+        </p>
+      </div>
+
+      <!-- Main Corporate Narrative Card (Names + What We Do, Zero Jargon) -->
+      <div class="p-5 sm:p-7 rounded-3xl bg-[#0D0D0D] border border-white/15 mb-5 reveal-on-scroll shadow-2xl relative overflow-hidden">
+        <div class="absolute inset-0 bg-noise opacity-30 pointer-events-none"></div>
+        <div class="relative z-10 space-y-3.5">
+          <div class="flex items-center gap-2 text-xs font-mono text-neutral-400 uppercase tracking-wider">
+            <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+            M2N TECH BİLİŞİM VE YAZILIM TEKNOLOJİLERİ
+          </div>
+
+          <p class="text-xs sm:text-sm md:text-base text-neutral-200 font-light leading-relaxed">
+            <strong class="text-white font-semibold">Mehmet Ali Esmer</strong>, <strong class="text-white font-semibold">Muhammed Emin Benzer</strong> ve <strong class="text-white font-semibold">Naci İbrahim Ay</strong> tarafından kurulan <strong class="text-white font-semibold">M2N Tech</strong>; esnaftan holding düzeyine kadar işletmelerin operasyonlarını dijitalleştiren, mobil uygulamalar, şirket içi yönetim panelleri, tam otomatik e-fatura/kargo entegrasyonları ve süreç optimizasyonu altyapıları inşa eden bağımsız bir teknoloji şirketidir.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 pt-3.5 border-t border-white/10 text-xs text-neutral-300">
+            <div class="flex items-start gap-2.5">
+              <span class="text-white font-bold font-mono">01 //</span>
+              <span><strong class="text-white font-medium">Ne Yapıyoruz?</strong> Saha takip sistemleri, B2B yönetim panelleri, mobil sipariş/randevu uygulamaları ve muhasebe/kargo API entegrasyonları kuruyoruz.</span>
+            </div>
+            <div class="flex items-start gap-2.5">
+              <span class="text-white font-bold font-mono">02 //</span>
+              <span><strong class="text-white font-medium">Nasıl Yapıyoruz?</strong> Hazır şablon veya yavaş çalışan kalıplar kullanmıyor; her satır kodu işletmenizin kârını ve hızını artıracak şekilde sıfırdan yazıyoruz.</span>
+            </div>
+            <div class="flex items-start gap-2.5">
+              <span class="text-white font-bold font-mono">03 //</span>
+              <span><strong class="text-white font-medium">Farkımız Ne?</strong> Satış temsilcileriyle veya aracılarla değil, doğrudan sistemi kuran çekirdek mühendislerimizle birebir muhatap olursunuz.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats / Metrics Strip (Directly Inspired by Screenshot) -->
+      <div class="w-full rounded-2xl bg-[#080808] border border-white/15 p-3.5 sm:p-5 relative overflow-hidden reveal-on-scroll">
+        <!-- Architectural subtle grid background -->
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:28px_28px] pointer-events-none"></div>
+
+        <div class="relative z-10 grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6 divide-y lg:divide-y-0 lg:divide-x divide-white/10">
+          
+          <!-- Metric 1: Özgün Mimari -->
+          <div class="flex items-center gap-3 pt-2 lg:pt-0 lg:px-3">
+            <div class="w-11 h-11 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center shrink-0 text-white shadow-inner">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+            </div>
+            <div>
+              <div class="text-lg sm:text-2xl font-extrabold text-white font-display leading-tight">%100</div>
+              <div class="text-[11px] sm:text-xs text-neutral-200 font-medium leading-tight">Özgün & Bağımsız Kod</div>
+              <div class="text-[10px] text-neutral-400 font-light">Kalıp hazır tema yok</div>
+            </div>
+          </div>
+
+          <!-- Metric 2: Canlı Destek -->
+          <div class="flex items-center gap-3 pt-2 lg:pt-0 lg:px-3">
+            <div class="w-11 h-11 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center shrink-0 text-white shadow-inner">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            </div>
+            <div>
+              <div class="text-lg sm:text-2xl font-extrabold text-white font-display leading-tight">7/24</div>
+              <div class="text-[11px] sm:text-xs text-neutral-200 font-medium leading-tight">Kesintisiz Canlı Destek</div>
+              <div class="text-[10px] text-neutral-400 font-light">Sıfır sistem kesintisi</div>
+            </div>
+          </div>
+
+          <!-- Metric 3: Entegrasyon -->
+          <div class="flex items-center gap-3 pt-2 lg:pt-0 lg:px-3">
+            <div class="w-11 h-11 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center shrink-0 text-white shadow-inner">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+            </div>
+            <div>
+              <div class="text-lg sm:text-2xl font-extrabold text-white font-display leading-tight">360°</div>
+              <div class="text-[11px] sm:text-xs text-neutral-200 font-medium leading-tight">Uçtan Uca Çözüm</div>
+              <div class="text-[10px] text-neutral-400 font-light">Mobil, Web, Kasa & Panel</div>
+            </div>
+          </div>
+
+          <!-- Metric 4: Komisyonsuz -->
+          <div class="flex items-center gap-3 pt-2 lg:pt-0 lg:px-3">
+            <div class="w-12 h-11 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center shrink-0 text-white shadow-inner">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <div>
+              <div class="text-lg sm:text-2xl font-extrabold text-white font-display leading-tight">%0</div>
+              <div class="text-[11px] sm:text-xs text-neutral-200 font-medium leading-tight">Aracı Komisyonu</div>
+              <div class="text-[10px] text-neutral-400 font-light">Doğrudan mühendis kadrosu</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ==================== 04. İLETİŞİM & PROJEYİ BAŞLAT (İKİ ÇİZGİ ARASINDA) ==================== -->
+  <section id="contact" class="fullscreen-snap-section overflow-hidden">
+    <!-- Traveling Border Light Beam -->
+    <div class="light-beam-h" style="animation-delay: 7.5s;"></div>
+
+    <!-- Architectural Subtle Dotted Matrix -->
+    <div class="absolute inset-0 bg-tech-dots pointer-events-none z-0"></div>
+
+    <!-- Soft Ambient Light Glow behind Contact Form -->
+    <div class="ambient-orb top-1/2 right-1/4 -translate-y-1/2 w-[460px] h-[460px] bg-white/[0.025] z-0"></div>
+
+    <!-- Side Technical Crosshair Markers -->
+    <div class="hidden lg:flex flex-col justify-between absolute top-16 bottom-16 left-6 pointer-events-none z-[2] text-[10px] font-mono text-neutral-600 select-none">
+      <div>┌ [04 // DISPATCH]</div>
+      <div class="w-px h-24 bg-white/10 mx-auto my-auto"></div>
+      <div>└ [SECURE.SSL]</div>
+    </div>
+    <div class="hidden lg:flex flex-col justify-between absolute top-16 bottom-16 right-6 pointer-events-none z-[2] text-[10px] font-mono text-neutral-600 select-none text-right">
+      <div>[DIRECT.PANEL] ┐</div>
+      <div class="w-px h-24 bg-white/10 mx-auto my-auto"></div>
+      <div>[FAST.TURNAROUND] ┘</div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 sm:px-12 w-full my-auto relative z-10">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-14 items-center">
+        
+        <!-- Left: Value Details -->
+        <div class="lg:col-span-5 space-y-5 reveal-on-scroll">
+          <div class="text-[11px] uppercase tracking-wider text-neutral-400 flex items-center gap-2 font-sans font-medium">
+            <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+            04 // İLETİŞİM & PROJEYİ BAŞLAT
+          </div>
+          <h2 class="text-3xl sm:text-5xl font-extralight uppercase font-display text-white">
+            İşinizi Birlikte <span class="font-bold text-white">Büyütelim</span>
+          </h2>
+          <p class="text-sm sm:text-base text-neutral-300 font-light leading-relaxed">
+            İster tek bir dükkânınız olsun ister 100 şubeli bir holding; aklınızdaki fikri veya işletmenizin tıkanan noktalarını yazın. Net ve uygulanabilir bir yol haritasıyla dönüş yapalım.
+          </p>
+
+          <!-- Direct Panel Note -->
+          <div class="p-5 rounded-2xl bg-[#0D0D0D] border border-white/10 text-xs text-neutral-300 space-y-1.5">
+            <div class="font-bold text-white flex items-center gap-2 text-sm">
+              <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+              Doğrudan Yönetim Paneline Düşer
+            </div>
+            <p class="font-light text-neutral-400 leading-relaxed text-xs">
+              Formu doldurduğunuz an bilgiler doğrudan kurucu ekibimizin yönetim ekranına ve anlık bildirim kuyruğuna aktarılır.
+            </p>
+          </div>
+
+          <div class="pt-3 space-y-2.5 text-xs text-neutral-400">
+            <div>E-posta: <a href="mailto:info@m2ntech.com" class="text-white hover:underline font-medium">info@m2ntech.com</a></div>
+            <div>Konum: <span class="text-white font-medium">İstanbul, Türkiye</span></div>
+          </div>
+        </div>
+
+        <!-- Right: Lead Generation Form -->
+        <div class="lg:col-span-7 reveal-on-scroll">
+          <div class="rounded-3xl p-6 sm:p-9 bg-[#0D0D0D] border border-white/12 shadow-2xl relative">
+            <form id="contactForm" class="space-y-4 relative z-10" onsubmit="handleFormSubmit(event)">
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="fullName" class="block text-xs font-medium text-neutral-400 mb-1.5">Ad Soyad *</label>
+                  <input type="text" id="fullName" required placeholder="Ahmet Yılmaz" 
+                    class="w-full px-4 py-3 rounded-xl bg-black/80 border border-white/10 text-white text-sm focus:border-white focus:outline-none transition-colors">
+                </div>
+                <div>
+                  <label for="company" class="block text-xs font-medium text-neutral-400 mb-1.5">Şirket / Kurum *</label>
+                  <input type="text" id="company" required placeholder="Şirket Adı" 
+                    class="w-full px-4 py-3 rounded-xl bg-black/80 border border-white/10 text-white text-sm focus:border-white focus:outline-none transition-colors">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="email" class="block text-xs font-medium text-neutral-400 mb-1.5">E-posta *</label>
+                  <input type="email" id="email" required placeholder="ahmet@sirketiniz.com" 
+                    class="w-full px-4 py-3 rounded-xl bg-black/80 border border-white/10 text-white text-sm focus:border-white focus:outline-none transition-colors">
+                </div>
+                <div>
+                  <label for="phone" class="block text-xs font-medium text-neutral-400 mb-1.5">Telefon *</label>
+                  <input type="tel" id="phone" required placeholder="+90 (5XX) XXX XX XX" 
+                    class="w-full px-4 py-3 rounded-xl bg-black/80 border border-white/10 text-white text-sm focus:border-white focus:outline-none transition-colors">
+                </div>
+              </div>
+
+              <div>
+                <label for="serviceInterest" class="block text-xs font-medium text-neutral-400 mb-1.5">İlgilendiğiniz Hizmet *</label>
+                <select id="serviceInterest" required 
+                  class="w-full px-4 py-3.5 rounded-xl bg-black/80 border border-white/10 text-white text-sm focus:border-white focus:outline-none transition-colors cursor-pointer">
+                  <option value="" disabled selected class="bg-black text-neutral-400">Bir hizmet seçin</option>
+                  <option value="Mobil Uygulama Geliştirme" class="bg-black text-white">Mobil Uygulama Geliştirme (iOS & Android)</option>
+                  <option value="Kuruma Özel Yönetim Panelleri" class="bg-black text-white">Kuruma Özel Yönetim Panelleri & CRM</option>
+                  <option value="Entegrasyon ve Otomasyon" class="bg-black text-white">Entegrasyon ve Otomasyon (E-Fatura & Kargo)</option>
+                  <option value="Kurumsal Web Siteleri" class="bg-black text-white">Kurumsal Web Siteleri & E-Ticaret</option>
+                  <option value="Bulut Altyapı ve Veri Mimarisi" class="bg-black text-white">Bulut Altyapı ve Veri Mimarisi</option>
+                  <option value="İşletme İçi Yapay Zekâ Araçları" class="bg-black text-white">İşletme İçi Yapay Zekâ Araçları</option>
+                  <option value="Süreç Analizi ve Danışmanlık" class="bg-black text-white">Süreç Analizi ve Danışmanlık</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="message" class="block text-xs font-medium text-neutral-400 mb-1.5">İhtiyacınızı Kısaca Açıklayın *</label>
+                <textarea id="message" rows="3" required placeholder="İşletmenizde dijitalleştirmek istediğiniz süreci veya mobil uygulama fikrinizi kısaca özetleyin..." 
+                  class="w-full px-4 py-3 rounded-xl bg-black/80 border border-white/10 text-white text-sm focus:border-white focus:outline-none transition-colors resize-none"></textarea>
+              </div>
+
+              <button type="submit" id="submitBtn" 
+                class="w-full py-3.5 px-6 rounded-xl bg-white text-black hover:bg-neutral-200 text-xs font-bold uppercase tracking-wider transition-all duration-200 flex items-center justify-center gap-2 shadow-lg hover:shadow-white/20 active:scale-[0.99] cursor-pointer">
+                <span id="btnText">Proje Talebini İlet</span>
+                <span id="btnArrow">↗</span>
+              </button>
+
+              <div id="successNotice" class="hidden mt-3 p-4 rounded-xl bg-neutral-900 border border-white/30 text-white text-xs">
+                Talebiniz doğrudan M2N kurumsal yönetim paneline iletildi. Ekibimiz en kısa sürede sizinle iletişime geçecektir.
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ==================== AYRI & FERAH FOOTER ==================== -->
+  <footer class="w-full py-12 sm:py-16 border-t border-white/15 bg-black text-xs text-neutral-500">
+    <div class="max-w-7xl mx-auto px-6 sm:px-12 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-4">
+        <img src="logo.png" alt="M2N Tech" class="h-6 w-auto object-contain opacity-80">
+        <span>© 2026 M2N Tech Bilişim ve Yazılım A.Ş. Tüm hakları saklıdır.</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <button type="button" onclick="openKvkkModal()" class="hover:text-white transition-colors">KVKK</button>
+        <button type="button" onclick="openPrivacyModal()" class="hover:text-white transition-colors">Gizlilik Politikası</button>
+      </div>
+    </div>
+  </footer>
+
+
+
+
+  <!-- ACCESSIBLE FULL LEGAL MODALS FOR KVKK & PRIVACY -->
+  <dialog id="kvkkModal" aria-labelledby="kvkkTitle" class="rounded-3xl bg-[#0C0C0C] border border-white/20 text-neutral-300 p-6 sm:p-9 max-w-2xl w-[92vw] shadow-2xl backdrop:bg-black/85 backdrop:backdrop-blur-md">
+    <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-5">
+      <div>
+        <h3 id="kvkkTitle" class="text-lg font-bold text-white font-display">KVKK Aydınlatma Metni</h3>
+        <p class="text-[11px] text-neutral-400 font-mono mt-0.5">6698 SAYILI KİŞİSEL VERİLERİN KORUNMASI KANUNU KAPSAMINDA</p>
+      </div>
+      <button type="button" onclick="closeKvkkModal()" class="text-neutral-400 hover:text-white p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors" aria-label="Kapat"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+    </div>
+    
+    <div class="space-y-4 text-xs leading-relaxed max-h-[55vh] overflow-y-auto pr-3 font-light text-neutral-300">
+      <div>
+        <h4 class="font-bold text-white mb-1">1. Veri Sorumlusu</h4>
+        <p>6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, veri sorumlusu sıfatıyla İstanbul Ticaret Sicili nezdinde kayıtlı <strong>M2N Tech Bilişim ve Yazılım A.Ş.</strong> ("M2N Tech") olarak, kişisel verilerinizi aşağıda açıklanan çerçevede hukuka ve dürüstlük kurallarına uygun olarak işlemekteyiz.</p>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-white mb-1">2. İşlenen Kişisel Verileriniz ve Toplama Yöntemi</h4>
+        <p>Web sitemizdeki iletişim ve proje talep formları üzerinden elektronik ortamda doğrudan sizler tarafından paylaşılan: Adınız, soyadınız, kurumsal e-posta adresiniz, şirket/kurum unvanınız ve proje açıklama metniniz toplanmaktadır.</p>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-white mb-1">3. Kişisel Verilerin İşlenme Amaçları</h4>
+        <p>Kişisel verileriniz; talep ettiğiniz yazılım geliştirme, mobil uygulama, yönetim paneli ve süreç otomasyonu hizmetlerine ilişkin ön analiz ve teklif hazırlanması, teknik fizibilite değerlendirmesi, müşteri ilişkileri süreçlerinin yönetilmesi ve kanuni bildirim yükümlülüklerinin yerine getirilmesi amacıyla sınırlı olarak işlenmektedir.</p>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-white mb-1">4. Verilerin Aktarılması</h4>
+        <p>Kişisel verileriniz, kanunen yetkili adli merciler veya idari kamu kurum ve kuruluşları haricinde hiçbir yurt içi veya yurt dışı üçüncü tarafla, reklam, pazarlama veya ticari kazanç amacıyla kesinlikle paylaşılmamakta, satılmamakta ve devredilmemektedir.</p>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-white mb-1">5. Hukuki Sebepler</h4>
+        <p>Kişisel verileriniz, KVKK m. 5/2-c bendi uyarınca "Bir sözleşmenin kurulması veya ifasıyla doğrudan doğruya ilgili olması kaydıyla, sözleşmenin taraflarına ait kişisel verilerin işlenmesinin gerekli olması" ve m. 5/2-f bendi uyarınca "Veri sorumlusunun meşru menfaatleri için veri işlenmesinin zorunlu olması" hukuki sebeplerine dayalı olarak işlenmektedir.</p>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-white mb-1">6. KVKK Madde 11 Kapsamındaki Haklarınız</h4>
+        <p>Veri sahibi olarak; kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse bilgi talep etme, işlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme, eksik veya yanlış işlenmişse düzeltilmesini isteme, silinmesini veya yok edilmesini talep etme haklarına sahipsiniz. Taleplerinizi resmi e-posta adresimiz olan <strong>info@m2ntech.com</strong> üzerinden her zaman iletebilirsiniz.</p>
+      </div>
+    </div>
+
+    <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+      <span class="text-[11px] text-neutral-500 font-mono">Yürürlük Tarihi: 2026</span>
+      <button type="button" onclick="closeKvkkModal()" class="px-5 py-2.5 rounded-xl bg-white text-black font-bold text-xs hover:bg-neutral-200 transition-colors">Anladım, Kapat</button>
+    </div>
+  </dialog>
+
+  <dialog id="privacyModal" aria-labelledby="privacyTitle" class="rounded-3xl bg-[#0C0C0C] border border-white/20 text-neutral-300 p-6 sm:p-9 max-w-2xl w-[92vw] shadow-2xl backdrop:bg-black/85 backdrop:backdrop-blur-md">
+    <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-5">
+      <div>
+        <h3 id="privacyTitle" class="text-lg font-bold text-white font-display">Gizlilik ve Güvenlik Politikası</h3>
+        <p class="text-[11px] text-neutral-400 font-mono mt-0.5">M2N TECH GİZLİLİK VE VERİ GÜVENLİĞİ STANDARTLARI</p>
+      </div>
+      <button type="button" onclick="closePrivacyModal()" class="text-neutral-400 hover:text-white p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors" aria-label="Kapat"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+    </div>
+
+    <div class="space-y-4 text-xs leading-relaxed max-h-[55vh] overflow-y-auto pr-3 font-light text-neutral-300">
+      <div>
+        <h4 class="font-bold text-white mb-1">1. Temel İlke ve Taahhüdümüz</h4>
+        <p>M2N Tech Bilişim ve Yazılım A.Ş. olarak ziyaretçilerimizin, iş ortaklarımızın ve danışanlarımızın mahremiyetine en üst düzeyde saygı duyarız. Sitemiz üzerinden gerçekleştirilen tüm veri transferleri, uçtan uca modern 256-bit SSL/TLS şifreleme sertifikalarıyla güvence altındadır.</p>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-white mb-1">2. Veri Güvenliği ve Altyapı İzolasyonu</h4>
+        <p>Proje talep formu aracılığıyla tarafımıza iletilen kurumsal ve kişisel bilgiler, doğrudan şirket içi izole yönetim ekranımıza aktarılır. Bilgileriniz harici açık bulut sistemlerinde barındırılmaz, yetkisiz erişim, sızıntı veya tahrifata karşı güvenlik duvarları ve sıkı erişim denetimleriyle korunur.</p>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-white mb-1">3. Çerez (Cookie) Politikası</h4>
+        <p>Web sitemizde yalnızca ziyaretçilerin sayfalar arası akışını, form oturum güvenliğini ve arayüz hızını optimize eden teknik çerezler kullanılmaktadır. Sitemizde izniniz olmaksızın reklam amaçlı hedefleme, 3. taraf davranışsal takip veya casus çerezler kesinlikle çalıştırılmaz.</p>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-white mb-1">4. İletişim Güvenliği</h4>
+        <p>Bizimle paylaştığınız iletişim kanalları yalnızca onay verdiğiniz proje konusuyla ilgili bilgilendirme ve teklif süreçlerinde kullanılır. Şirketimiz kesinlikle istenmeyen ticari ileti (SPAM) göndermez.</p>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-white mb-1">5. İletişim ve Yetkili Kanal</h4>
+        <p>Gizlilik politikamız veya kişisel verilerinizin güvenliği ile ilgili her türlü soru, görüş ve başvurunuz için <strong>info@m2ntech.com</strong> adresi üzerinden doğrudan veri koruma sorumlumuza ulaşabilirsiniz.</p>
+      </div>
+    </div>
+
+    <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+      <span class="text-[11px] text-neutral-500 font-mono">Versiyon: 2026.1 // M2N Tech Security</span>
+      <button type="button" onclick="closePrivacyModal()" class="px-5 py-2.5 rounded-xl bg-white text-black font-bold text-xs hover:bg-neutral-200 transition-colors">Anladım, Kapat</button>
+    </div>
+  </dialog>
+
+  <!-- ========================================================
+       GERÇEKÇİ 3D FLUID GERSTNER DALGASI & KESİN PİKSEL NAVİGASYON
+       ======================================================== -->
+  <script>
+    const canvas = document.getElementById('waveCanvas');
+    const ctx = canvas.getContext('2d');
+    const hero = document.getElementById('heroSection');
+
+    let width, height;
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = hero.offsetHeight || window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Sonsuz ekran: 92 sütun, 56 satır; ekran genişliğinin 3.2 katına yayılan 3D matrix
+    const COLS = 92;
+    const ROWS = 56;
+    let SPACING_X = Math.max(38, (width * 3.2) / COLS);
+    const SPACING_Z = 30;
+
+    // Bize doğru 43° eğimli ileri perspektif
+    const PITCH_ANGLE = 0.75;
+    const cosPitch = Math.cos(PITCH_ANGLE);
+    const sinPitch = Math.sin(PITCH_ANGLE);
+
+    let time = 0;
+
+    // Mouse Tracking with smooth Lerp
+    let mouse = {
+      x: 0,
+      y: 0,
+      targetX: 0,
+      targetY: 0,
+      screenX: width / 2,
+      screenY: height / 2
+    };
+
+    window.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.screenX = e.clientX - rect.left;
+      mouse.screenY = e.clientY - rect.top;
+
+      mouse.targetX = (e.clientX / window.innerWidth - 0.5) * 1.8;
+      mouse.targetY = (e.clientY / window.innerHeight - 0.5) * 1.8;
+
+      const cursorGlow = document.getElementById('cursorGlow');
+      if (cursorGlow) {
+        cursorGlow.style.left = e.clientX + 'px';
+        cursorGlow.style.top = e.clientY + 'px';
+      }
+    });
+
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        mouse.screenX = touch.clientX - rect.left;
+        mouse.screenY = touch.clientY - rect.top;
+        mouse.targetX = (touch.clientX / window.innerWidth - 0.5) * 1.8;
+        mouse.targetY = (touch.clientY / window.innerHeight - 0.5) * 1.8;
+      }
+    }, { passive: true });
+
+    // ========================================================
+    // GERÇEK SIVI SU DALGASI (ASMR, SAKİN, DOĞAL & ZARİF HALKA)
+    // ========================================================
+    const ripples = [];
+
+    function triggerRipple(screenX, screenY) {
+      if (ripples.length >= 2) {
+        ripples.shift();
+      }
+
+      // Suya zarif bir damla düşmesi hissi veren sakin, tekil konsantrik su dalgası
+      ripples.push({
+        x: screenX,
+        y: screenY,
+        radius: 0,
+        maxRadius: Math.hypot(width, height) * 1.3,
+        speed: 4.0,        // Gerçek su dalgası yayılma hızı
+        wavelength: 85,    // Zarif, derli toplu ve küçük su dalgası halkası
+        amplitude: 13,     // Vıcık vıcık olmayan, sakin ve kaliteli su kalkışı
+        decay: 0.988,      // Pürüzsüz doğal sönümleme
+        strength: 1.0
+      });
+    }
+
+    // Tıklamada pürüzsüz sakin su dalgası başlat
+    window.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('button, a, input, select, textarea, .luxury-card, .clean-card, dialog')) return;
+      const rect = canvas.getBoundingClientRect();
+      triggerRipple(e.clientX - rect.left, e.clientY - rect.top);
+    });
+
+    // Açılış selamlama dalgası
+    setTimeout(() => {
+      triggerRipple(width / 2, height * 0.62);
+    }, 400);
+
+    function render3DWave() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Ekran genişliğine göre sonsuz matrix aralığı
+      SPACING_X = Math.max(38, (width * 3.2) / COLS);
+
+      // Smooth interpolation for mouse movement (Lerp damping)
+      mouse.x += (mouse.targetX - mouse.x) * 0.05;
+      mouse.y += (mouse.targetY - mouse.y) * 0.05;
+
+      const centerX = width / 2;
+      const centerY = height * 0.58 + mouse.y * 28;
+      const fov = 460;
+
+      // Dynamic rotation influenced by mouse
+      const yaw = mouse.x * 0.18;
+      const cosYaw = Math.cos(yaw);
+      const sinYaw = Math.sin(yaw);
+
+      const currentPitch = PITCH_ANGLE + mouse.y * 0.10;
+      const cp = Math.cos(currentPitch);
+      const sp = Math.sin(currentPitch);
+
+      const halfCols = (COLS - 1) / 2;
+      const halfRows = (ROWS - 1) / 2;
+
+      // Draw all nodes in depth-sorted order (back to front)
+      for (let iz = ROWS - 1; iz >= 0; iz--) {
+        
+        // Z derinlik sönümlemesi
+        const zRatio = (ROWS - iz) / ROWS;
+        const zFade = Math.sin(zRatio * Math.PI * 0.5);
+
+        for (let ix = 0; ix < COLS; ix++) {
+          
+          const localX = (ix - halfCols) * SPACING_X;
+          const localZ = (iz - halfRows * 0.42) * SPACING_Z;
+
+          // Kenarlarda kesilmeyi sıfırlayan organik yatay sönümleme (sonsuz ekran hissi)
+          const xRatio = ix / (COLS - 1);
+          const xFade = Math.sin(xRatio * Math.PI);
+          const edgeAlpha = Math.pow(xFade, 0.55) * zFade;
+
+          // ========================================================
+          // GERÇEKÇİ GERSTNER OKYANUS SIVI DALGALANMA FORMÜLÜ
+          // ========================================================
+          const w1 = Math.sin(ix * 0.12 + time * 0.95 + iz * 0.08);
+          const w2 = Math.cos(iz * 0.13 - time * 0.8 + ix * 0.05);
+          const w3 = Math.sin((ix * 0.06 - iz * 0.10) + time * 1.3);
+
+          const crest1 = Math.pow((w1 + 1) * 0.5, 1.35) * 2 - 1;
+          let localY = (crest1 * 24) + (w2 * 18) + (w3 * 12);
+
+          // 1. ROTATION AROUND X-AXIS: Forward Tilt
+          const yTilted = localY * cp - localZ * sp;
+          const zTilted = localY * sp + localZ * cp + 720;
+
+          // 2. ROTATION AROUND Y-AXIS: Gentle Yaw from Mouse
+          const xFinal = localX * cosYaw - zTilted * sinYaw;
+          const zFinal = localX * sinYaw + zTilted * cosYaw;
+          const yFinal = yTilted;
+
+          if (zFinal > 50) {
+            const scale = fov / zFinal;
+            const screenX = centerX + xFinal * scale;
+            const screenY = centerY + (yFinal + 115) * scale;
+
+            // Farenin etrafındaki yumuşak çekim
+            const dx = screenX - mouse.screenX;
+            const dy = screenY - mouse.screenY;
+            const dist = Math.hypot(dx, dy);
+
+            let lift = 0;
+            if (dist < 160) {
+              lift = (1 - dist / 160) * 10 * Math.sin(time * 2.8);
+            }
+
+            // Gerçekçi tekil su damlası halkası yayılımı (vıcık vıcık titreşimi sıfırlar)
+            let rippleLift = 0;
+            for (let r = 0; r < ripples.length; r++) {
+              const rip = ripples[r];
+              const rdist = Math.hypot(screenX - rip.x, screenY - rip.y);
+              const diff = rdist - rip.radius;
+
+              if (diff > -rip.wavelength && diff < rip.wavelength) {
+                const norm = diff / rip.wavelength;
+                // Tekil ve sakin su tepesi zarfı
+                const envelope = Math.cos(norm * Math.PI * 0.5) ** 2;
+                const wave = Math.sin(norm * Math.PI);
+                const attenuation = Math.max(0, 1 - rdist / (width * 1.2));
+                rippleLift += wave * envelope * rip.amplitude * rip.strength * attenuation;
+              }
+            }
+
+            // Fare imlecinin altındaki alana hafif, pürüzsüz ve asil bir ortam ışığı saçar
+            const mouseDist = Math.hypot(screenX - mouse.screenX, screenY - mouse.screenY);
+            let mouseGlow = 0;
+            if (mouseDist < 200) {
+              mouseGlow = Math.pow(1 - mouseDist / 200, 1.7);
+            }
+
+            const finalScreenY = screenY - lift - rippleLift;
+
+            if (screenX >= -20 && screenX <= width + 20 && finalScreenY >= -20 && finalScreenY <= height + 20) {
+              
+              // ========================================================
+              // DOĞAL PARLAK IŞIKLI DALGA TEPELERİ & MOUSE IŞIK AURASI
+              // Dalga tepeleri kendiliğinden parlar, mouse altındaki alan ise hafif ışık saçar
+              // ========================================================
+              const peakFactor = Math.max(0, Math.min(1, (-localY + 18) / 58));
+              const crestShimmer = Math.pow(peakFactor, 1.55);
+
+              // Tıklama dalgası ve su halkası ışıldaması
+              const rippleFactor = Math.abs(rippleLift) / 13;
+              const totalPeak = Math.min(1, crestShimmer + rippleFactor * 0.5);
+
+              // Tepe noktaları dolgun, mouse altındaki noktalar da hafifçe belirginleşir
+              const baseRadius = 2.1 * scale;
+              const radius = Math.max(0.85, Math.min(3.4, baseRadius * (0.85 + totalPeak * 0.75 + mouseGlow * 0.35)));
+
+              // Tepe noktalarında doğal ışık (%95+) + mouse altındaki alana hafif ve asil bir ekstra ışık
+              const baseAlpha = 0.20 + 0.25 * scale;
+              let alpha = Math.min(1.0, baseAlpha + totalPeak * 0.72 + mouseGlow * 0.38) * edgeAlpha;
+
+              ctx.beginPath();
+              ctx.arc(screenX, finalScreenY, radius, 0, Math.PI * 2);
+              ctx.fillStyle = 'rgba(255, 255, 255, ' + alpha.toFixed(3) + ')';
+              ctx.fill();
+            }
+          }
+        }
+      }
+
+      // Dalga halkalarını akıcı şekilde genişlet ve sönümlendir
+      for (let r = ripples.length - 1; r >= 0; r--) {
+        const rip = ripples[r];
+        rip.radius += rip.speed;
+        rip.strength *= rip.decay;
+        if (rip.radius > rip.maxRadius || rip.strength < 0.04) {
+          ripples.splice(r, 1);
+        }
+      }
+
+      time += 0.016 + Math.abs(mouse.x) * 0.005;
+
+      requestAnimationFrame(render3DWave);
+    }
+
+    // Start 3D wave animation loop immediately
+    requestAnimationFrame(render3DWave);
+
+    // ========================================================
+    // ========================================================
+    // KESİN PİKSEL NAVİGASYON (SEKMEYE BASINCA NET 85PX HİZALAMA)
+    // Asla üste veya alta kaymaz; sabit navbar'ın tam 10px altına sıfır hata ile oturur!
+    // ========================================================
+    // ========================================================
+    // İKİ ÇİZGİ ARASINA ALMA & KESİN PİKSEL KONUMLAMA (TAM 82PX SCROLL)
+    // Sekmeye basıldığında tam olarak iki çizginin arasını göreceğimiz şekilde konumlandırır!
+    // ========================================================
+    // ========================================================
+    // İKİ ÇİZGİ ARASINA KESİN PİKSEL KONUMLAMA (ZERO PIXEL ERROR)
+    // Üstte önceki bölümün taşmasını kesinlikle engeller!
+    // ========================================================
+    function scrollToSection(targetId) {
+      if (!targetId || targetId === '#' || targetId === '#hero' || targetId === '#heroSection') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+      const target = document.querySelector(targetId);
+      if (!target) return;
+      
+      let top = 0;
+      let el = target;
+      while (el) {
+        top += el.offsetTop || 0;
+        el = el.offsetParent;
+      }
+      
+      window.scrollTo({
+        top: Math.round(top),
+        behavior: 'smooth'
+      });
+    }
+
+    // Horizontal Service Cards Slider Controls
+    function scrollServiceCards(direction) {
+      const track = document.getElementById('servicesTrack');
+      if (track) {
+        track.scrollBy({
+          left: direction * 360,
+          behavior: 'smooth'
+        });
+      }
+    }
+
+    // ========================================================
+    // M2N CLOVER LOGO 4-LEAF SWITCHER (DIRECTLY LINKED TO IMAGE 2)
+    // ========================================================
+    const cloverData = {
+      1: {
+        badge: "HIZLI BAŞLANGIÇ • ESNAF & BUTİK",
+        leafNum: "ÖLÇEK // 01",
+        title: "Dükkânınız İnternette Satış Yapsın: Sıfır Kâğıt, Kolay Sipariş",
+        desc: "Müşterilerinizin sizi internette anında bulmasını ve doğrudan sipariş vermesini sağlıyoruz. Kâğıt defter kalabalığına son verin.",
+        bullets: [
+          "Google aramalarında üst sıralara çıkan hızlı web vitrini",
+          "WhatsApp ve telefon üzerinden anında sipariş kabulü",
+          "Cepten kolay müşteri, randevu ve sipariş kayıt defteri"
+        ],
+        roi: "Sipariş ve hesap karmaşasını bitirir; kasanızı cebinize getirir.",
+        ctaText: "Esnaf Çözümünü Konuşalım ↗",
+        service: "Kurumsal Web Siteleri"
+      },
+      2: {
+        badge: "★ POPÜLER TERCİH • BÜYÜYEN KOBİ",
+        leafNum: "ÖLÇEK // 02",
+        title: "Saha Ekibi, Şubeler ve Kasa Tek Ekranda",
+        desc: "Birden fazla personeli veya sahası olan firmalar için Excel karmaşasını bitiriyoruz. Kim nerede, kasa ve siparişler ne durumda anlık görün.",
+        bullets: [
+          "Saha personeli için canlı GPS konum takibi ve puantaj",
+          "Çok şubeli ve çok personelli merkezi yönetim paneli",
+          "E-fatura, SMS ve kargo sistemleriyle tam otomatik veri akışı"
+        ],
+        roi: "Şube ve saha operasyonunu tek ekrana bağlar; personel hatalarını sıfırlar.",
+        ctaText: "Şirket Paketini Başlat ↗",
+        service: "Kuruma Özel Yönetim Panelleri"
+      },
+      3: {
+        badge: "TAM OTOMASYON • ZİNCİR & DAĞITIM",
+        leafNum: "ÖLÇEK // 03",
+        title: "Şubeler ve Depolar Arasında Sıfır Hata: E-Fatura & Kargo",
+        desc: "Farklı muhasebe, banka ve e-ticaret sistemlerinizi konuşturuyoruz. Manuel fatura ve kargo işini saniyelere indirin.",
+        bullets: [
+          "E-fatura, e-arşiv ve kargo firmalarıyla tam otomatik API entegrasyonu",
+          "Banka hesap hareketleri ve toplu tahsilat eşleştirme",
+          "Tüm şube ve bayiler için anlık merkezi stok mutabakatı"
+        ],
+        roi: "Saatler süren manuel evrak ve kargo işini sıfıra indirir.",
+        ctaText: "Otomasyonu Başlat ↗",
+        service: "Entegrasyon ve Otomasyon"
+      },
+      4: {
+        badge: "KURUMSAL ÖLÇEK • HOLDİNG & GRUP",
+        leafNum: "ÖLÇEK // 04",
+        title: "Yüksek Güvenlik ve Kesintisiz Mimari: SAP/Logo API",
+        desc: "Milyonlarca veriyi anında işleyen, binlerce personeli kaldıran, tam denetim loglamalı yüksek güvenlikli altyapılar inşa ediyoruz.",
+        bullets: [
+          "Yüksek trafik ve kesintisiz çalışma garantili bulut mimarisi",
+          "Mevcut ERP ve banka sistemleri ile özel API köprüsü",
+          "Rol bazlı yetkilendirme, KVKK ve tam denetim loglaması"
+        ],
+        roi: "Kritik kurumsal verileri tek merkezde toplar; sistem kesintilerini sıfırlar.",
+        ctaText: "Kurumsal Çözüm Talep Et ↗",
+        service: "Süreç Analizi ve Danışmanlık"
+      }
+    };
+
+    function selectCloverLeaf(id) {
+      for (let i = 1; i <= 4; i++) {
+        const leaf = document.getElementById('leaf-' + i);
+        if (leaf) {
+          if (i === id) {
+            leaf.classList.add('active-leaf');
+          } else {
+            leaf.classList.remove('active-leaf');
+          }
+        }
+      }
+
+      const data = cloverData[id];
+      if (!data) return;
+
+      const wrap = document.getElementById('cloverContentWrap');
+      if (wrap) {
+        wrap.style.opacity = '0.35';
+        setTimeout(() => {
+          document.getElementById('cloverBadge').textContent = data.badge;
+          document.getElementById('cloverLeafNum').textContent = data.leafNum;
+          document.getElementById('cloverTitle').textContent = data.title;
+          document.getElementById('cloverDesc').textContent = data.desc;
+          
+          let bHtml = '';
+          data.bullets.forEach(b => {
+            bHtml += `<div class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-white shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>${b}</span>
+            </div>`;
+          });
+          document.getElementById('cloverBullets').innerHTML = bHtml;
+          document.getElementById('cloverRoiBox').innerHTML = '<strong class="text-white">Net Faydası:</strong> ' + data.roi;
+          
+          const btn = document.getElementById('cloverCtaBtn');
+          btn.textContent = data.ctaText;
+          btn.setAttribute('onclick', `selectServiceAndScroll('${data.service}')`);
+
+          wrap.style.opacity = '1';
+        }, 90);
+      }
+    }
+
+    function toggleFlip(buttonEl) {
+      const inner = buttonEl.closest('.flip-card-inner');
+      if (inner) {
+        inner.classList.toggle('is-flipped');
+      }
+    }
+
+
+    // ========================================================
+    // 3D KART TİLT (YALNIZCA HİZMET & EKİP KARTLARINDA ÇALIŞIR)
+    // İletişim Formunda "Yamulma" Kesinlikle Yoktur!
+    // ========================================================
+    const tiltCards = document.querySelectorAll('.tilt-card');
+
+    tiltCards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -6;
+        const rotateY = ((x - centerX) / centerX) * 6;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateZ(6px)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+      });
+    });
+
+
+    // ========================================================
+    // SCROLL-DRIVEN REVEALS
+    // ========================================================
+    const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    revealElements.forEach(el => observer.observe(el));
+
+
+    // ========================================================
+    // FORM & MODAL CONTROLS
+    // ========================================================
+    function selectServiceAndScroll(serviceName) {
+      const select = document.getElementById('serviceInterest');
+      if (select) {
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].value === serviceName) {
+            select.selectedIndex = i;
+            break;
+          }
+        }
+      }
+      const contactSec = document.getElementById('contact');
+      if (contactSec) {
+        contactSec.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const btnText = document.getElementById('btnText');
+      const btnArrow = document.getElementById('btnArrow');
+      const successNotice = document.getElementById('successNotice');
+
+      btnText.textContent = "Gönderiliyor...";
+      btnArrow.textContent = "⋯";
+
+      setTimeout(() => {
+        btnText.textContent = "Gönderildi";
+        btnArrow.textContent = "→";
+        successNotice.classList.remove('hidden');
+        document.getElementById('contactForm').reset();
+      }, 900);
+    }
+
+    const kvkkModal = document.getElementById('kvkkModal');
+    const privacyModal = document.getElementById('privacyModal');
+
+    function openKvkkModal() { kvkkModal.showModal(); }
+    function closeKvkkModal() { kvkkModal.close(); }
+    function openPrivacyModal() { privacyModal.showModal(); }
+    function closePrivacyModal() { privacyModal.close(); }
+
+    [kvkkModal, privacyModal].forEach(dialog => {
+      dialog.addEventListener('click', (e) => {
+        const rect = dialog.getBoundingClientRect();
+        if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) {
+          dialog.close();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

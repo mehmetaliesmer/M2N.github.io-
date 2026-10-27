@@ -1,0 +1,23 @@
+{
+  "name": "m2n-tech-website",
+  "version": "1.0.0",
+  "description": "M2N Tech — Premium High-Conversion B2B Corporate Website",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve ."
+  },
+  "keywords": [
+    "m2n-tech",
+    "b2b",
+    "software-agency",
+    "tailwind",
+    "dark-mode",
+    "corporate-website"
+  ],
+  "author": "M2N Tech",
+  "license": "MIT",
+  "devDependencies": {
+    "sharp": "^0.35.5"
+  }
+}
