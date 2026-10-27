@@ -365,10 +365,14 @@
     .leaf-badge,
     .populer-pill-badge {
       display: inline-flex;
+      flex-direction: row;
       align-items: center;
       justify-content: center;
+      white-space: nowrap !important;
+      word-break: keep-all !important;
+      flex-shrink: 0;
       gap: 0.25rem;
-      padding: 0.18rem 0.62rem;
+      padding: 0.2rem 0.65rem;
       border-radius: 9999px !important;
       line-height: 1;
       margin-bottom: 0.35rem;
@@ -1480,7 +1484,7 @@
 
             <!-- Leaf 2: Top-Right (KOBİ - Popüler Tercih Active by Default) -->
             <div id="leaf-2" onclick="selectCloverLeaf(2)" class="m2n-clover-leaf leaf-tr active-leaf">
-              <span class="populer-pill-badge">★ POPÜLER</span>
+              <span class="populer-pill-badge whitespace-nowrap"><span class="inline-block text-[8px] mr-0.5">★</span>POPÜLER</span>
               <span class="leaf-title text-xs sm:text-sm font-bold leading-tight">Büyüyen KOBİ</span>
             </div>
 
