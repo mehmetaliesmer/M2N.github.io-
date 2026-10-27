@@ -733,6 +733,17 @@
     html.light-theme #submitBtn:hover * {
       background-color: #27272A !important;
     }
+    html.light-theme #successNotice {
+      background-color: #ECFDF5 !important;
+      border-color: rgba(16, 185, 129, 0.4) !important;
+    }
+    html.light-theme #successNotice strong {
+      color: #065F46 !important;
+    }
+    html.light-theme #successNotice,
+    html.light-theme #successNotice * {
+      color: #047857 !important;
+    }
 
     /* Architectural Cyber Grid & Dots in Light Mode */
     html.light-theme .bg-tech-grid {
@@ -1818,8 +1829,12 @@
                 <span id="btnArrow">↗</span>
               </button>
 
-              <div id="successNotice" class="hidden mt-3 p-4 rounded-xl bg-neutral-900 border border-white/30 text-white text-xs">
-                Talebiniz doğrudan M2N kurumsal yönetim paneline iletildi. Ekibimiz en kısa sürede sizinle iletişime geçecektir.
+              <div id="successNotice" class="hidden mt-4 p-4 rounded-2xl bg-emerald-950/60 border border-emerald-500/50 text-emerald-300 text-xs flex items-start gap-3 shadow-xl">
+                <span class="text-base leading-none text-emerald-400 font-bold shrink-0 mt-0.5">✓</span>
+                <div class="leading-relaxed">
+                  <strong class="font-bold block text-white text-xs mb-0.5">Talebiniz Başarıyla Alındı!</strong>
+                  Talebiniz anında M2N yönetim paneline iletildi. Ekibimiz en kısa sürede sizinle iletişime geçecektir.
+                </div>
               </div>
 
             </form>
@@ -2513,26 +2528,33 @@
         phone: document.getElementById('phone')?.value || '',
         serviceInterest: document.getElementById('serviceInterest')?.value || '',
         message: document.getElementById('message')?.value || '',
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toLocaleString('tr-TR')
       };
 
-      // Send directly to M2N Desktop Management Panel (Port 4848)
-      fetch('http://127.0.0.1:4848/api/leads', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(leadData)
-      }).catch(() => {
-        // Fallback: save to localStorage if desktop panel is currently closed
-        try {
-          const offlineLeads = JSON.parse(localStorage.getItem('m2n_offline_leads') || '[]');
-          offlineLeads.push(leadData);
-          localStorage.setItem('m2n_offline_leads', JSON.stringify(offlineLeads));
-        } catch(err) {}
-      });
+      // 1. Direct Cloud Dispatch (Works seamlessly from live HTTPS GitHub Pages)
+      try {
+        fetch('https://ntfy.sh/m2n_tech_leads_channel_v1_secure', {
+          method: 'POST',
+          headers: {
+            'Title': 'M2N Web Basvurusu: ' + leadData.fullName,
+            'Priority': 'high'
+          },
+          body: JSON.stringify(leadData)
+        }).catch(err => console.log('Cloud sync note:', err));
+      } catch(e) {}
+
+      // 2. Local Port Dispatch (if running on same machine)
+      try {
+        fetch('http://127.0.0.1:4848/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(leadData)
+        }).catch(() => {});
+      } catch(e) {}
 
       setTimeout(() => {
         btnText.textContent = "Gönderildi";
-        btnArrow.textContent = "→";
+        btnArrow.textContent = "✓";
         successNotice.classList.remove('hidden');
         document.getElementById('contactForm').reset();
       }, 700);

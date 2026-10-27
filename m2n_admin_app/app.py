@@ -6,6 +6,7 @@ import threading
 import time
 from datetime import datetime
 from http.server import HTTPServer, BaseHTTPRequestHandler
+import urllib.request
 import webview
 
 # Ensure UTF-8 output
@@ -22,6 +23,8 @@ else:
 DB_PATH = os.path.join(BASE_DIR, 'leads.db')
 UI_DIR = os.path.join(ASSETS_DIR, 'ui')
 INDEX_HTML = os.path.join(UI_DIR, 'index.html')
+
+CLOUD_SYNC_URL = 'https://ntfy.sh/m2n_tech_leads_channel_v1_secure/json?poll=1&since=all'
 
 def get_db():
     conn = sqlite3.connect(DB_PATH)
@@ -48,39 +51,59 @@ def init_db():
         )
     ''')
     conn.commit()
-
-    # Pre-populate sample starter leads if table is empty
-    cursor.execute('SELECT COUNT(*) FROM leads')
-    if cursor.fetchone()[0] == 0:
-        sample_leads = [
-            (
-                "Kadir Demir", "Demir Lojistik A.Ş.", "kadir@demirlojistik.com", "+90 532 411 90 20",
-                "Şirket İçi Yönetim Panelleri (CRM / ERP)", "150.000 ₺ - 300.000 ₺",
-                "45 adet tır ve 60 kişilik saha personelimiz var. Excel takibini bırakıp anlık GPS ve sefer puantaj takip paneli istiyoruz.",
-                "Yeni", "Yüksek öncelikli KOBİ, yarın aranacak.", 1, "2026-10-27 10:15:00"
-            ),
-            (
-                "Selin Acar", "Acar Butik & Tasarım", "selin@acarbutik.com", "+90 544 890 12 34",
-                "Mobil Uygulama Geliştirme (iOS & Android)", "75.000 ₺ - 150.000 ₺",
-                "Instagram ve web sitemizdeki ürünlerin mobil uygulamadan satışı ve sadakat puan sistemi için teklif almak istiyoruz.",
-                "İnceleniyor", "Örnek e-ticaret demo ekranı paylaşıldı.", 0, "2026-10-27 11:42:00"
-            ),
-            (
-                "Kemal Arslan", "Arslan Perakende Zinciri", "k.arslan@arslangrup.com.tr", "+90 533 710 45 60",
-                "Süreç Otomasyonu & Entegrasyon", "300.000 ₺+",
-                "12 mağazamızdaki kasalar ile merkez muhasebe arasında anlık stok ve ciro mutabakat otomasyonu kurulması gerekiyor.",
-                "Teklif Verildi", "Teklif sunumu iletildi, Perşembe Zoom toplantısı var.", 1, "2026-10-27 13:05:00"
-            )
-        ]
-        cursor.executemany('''
-            INSERT INTO leads (full_name, company, email, phone, service_interest, budget, message, status, notes, is_starred, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', sample_leads)
-        conn.commit()
     conn.close()
 
 
-# Background HTTP Server for receiving website form posts
+def insert_lead_if_new(lead_dict):
+    full_name = (lead_dict.get('fullName') or lead_dict.get('full_name') or 'İsimsiz').strip()
+    company = (lead_dict.get('company') or '-').strip()
+    email = (lead_dict.get('email') or '').strip()
+    phone = (lead_dict.get('phone') or '').strip()
+    service_interest = (lead_dict.get('serviceInterest') or lead_dict.get('service_interest') or 'Belirtilmedi').strip()
+    budget = (lead_dict.get('budget') or '-').strip()
+    message = (lead_dict.get('message') or '').strip()
+    created_at = lead_dict.get('timestamp') or datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('SELECT id FROM leads WHERE full_name = ? AND phone = ? AND message = ?', (full_name, phone, message))
+    if not cursor.fetchone():
+        cursor.execute('''
+            INSERT INTO leads (full_name, company, email, phone, service_interest, budget, message, status, notes, is_starred, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 'Yeni', '', 1, ?)
+        ''', (full_name, company, email, phone, service_interest, budget, message, created_at))
+        conn.commit()
+        lead_id = cursor.lastrowid
+        conn.close()
+        return lead_id
+    conn.close()
+    return None
+
+
+# Background Cloud Synchronizer: Pulls from HTTPS Cloud Channel
+def sync_cloud_leads_loop():
+    while True:
+        try:
+            req = urllib.request.Request(CLOUD_SYNC_URL, headers={'User-Agent': 'M2N-Desktop-App/1.0'})
+            with urllib.request.urlopen(req, timeout=12) as resp:
+                content = resp.read().decode('utf-8')
+                for line in content.strip().split('\n'):
+                    if not line:
+                        continue
+                    try:
+                        obj = json.loads(line)
+                        if obj.get('event') == 'message' and 'message' in obj:
+                            raw_msg = obj['message']
+                            lead_data = json.loads(raw_msg)
+                            insert_lead_if_new(lead_data)
+                    except Exception:
+                        pass
+        except Exception:
+            pass
+        time.sleep(3)
+
+
+# Background Local HTTP Server for receiving website form posts on port 4848
 class LeadReceiverHandler(BaseHTTPRequestHandler):
     def _send_cors_headers(self):
         self.send_header('Access-Control-Allow-Origin', '*')
@@ -121,31 +144,12 @@ class LeadReceiverHandler(BaseHTTPRequestHandler):
             post_data = self.rfile.read(content_length).decode('utf-8')
             try:
                 data = json.loads(post_data)
-                full_name = data.get('fullName') or data.get('full_name') or 'İsimsiz'
-                company = data.get('company') or '-'
-                email = data.get('email') or ''
-                phone = data.get('phone') or ''
-                service_interest = data.get('serviceInterest') or data.get('service_interest') or 'Belirtilmedi'
-                budget = data.get('budget') or 'Belirtilmedi'
-                message = data.get('message') or ''
-
-                now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
-                conn = get_db()
-                cursor = conn.cursor()
-                cursor.execute('''
-                    INSERT INTO leads (full_name, company, email, phone, service_interest, budget, message, status, notes, is_starred, created_at)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, 'Yeni', '', 1, ?)
-                ''', (full_name, company, email, phone, service_interest, budget, message, now))
-                lead_id = cursor.lastrowid
-                conn.commit()
-                conn.close()
-
+                lead_id = insert_lead_if_new(data)
                 self.send_response(200)
                 self._send_cors_headers()
                 self.send_header('Content-Type', 'application/json; charset=utf-8')
                 self.end_headers()
-                self.wfile.write(json.dumps({'success': True, 'lead_id': lead_id, 'created_at': now}).encode('utf-8'))
+                self.wfile.write(json.dumps({'success': True, 'lead_id': lead_id}).encode('utf-8'))
             except Exception as e:
                 self.send_response(400)
                 self._send_cors_headers()
@@ -157,7 +161,6 @@ class LeadReceiverHandler(BaseHTTPRequestHandler):
             self.end_headers()
 
     def log_message(self, format, *args):
-        # Silence HTTP console logs
         return
 
 
@@ -182,27 +185,6 @@ class M2NJsApi:
         leads = [dict(row) for row in rows]
         conn.close()
         return leads
-
-    def add_lead(self, data):
-        full_name = data.get('full_name', '').strip()
-        company = data.get('company', '').strip()
-        email = data.get('email', '').strip()
-        phone = data.get('phone', '').strip()
-        service_interest = data.get('service_interest', '')
-        budget = data.get('budget', '')
-        message = data.get('message', '').strip()
-        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
-        conn = get_db()
-        cursor = conn.cursor()
-        cursor.execute('''
-            INSERT INTO leads (full_name, company, email, phone, service_interest, budget, message, status, notes, is_starred, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, 'Yeni', '', 1, ?)
-        ''', (full_name, company, email, phone, service_interest, budget, message, now))
-        lead_id = cursor.lastrowid
-        conn.commit()
-        conn.close()
-        return {'success': True, 'id': lead_id}
 
     def update_status(self, lead_id, new_status):
         conn = get_db()
@@ -265,13 +247,17 @@ class M2NJsApi:
 def main():
     init_db()
 
-    # Launch background HTTP receiver on port 4848
+    # 1. Background local HTTP server
     http_thread = threading.Thread(target=start_http_server, daemon=True)
     http_thread.start()
 
+    # 2. Background cloud HTTPS synchronizer (Pulls live website submissions)
+    cloud_thread = threading.Thread(target=sync_cloud_leads_loop, daemon=True)
+    cloud_thread.start()
+
     api = M2NJsApi()
     window = webview.create_window(
-        title='M2N Tech — Lead & Proje Yönetim Paneli',
+        title='M2N Tech — Gelen Başvurular Yönetim Paneli',
         url=INDEX_HTML,
         js_api=api,
         width=1280,
